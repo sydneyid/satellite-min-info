@@ -10,19 +10,29 @@ Using graph neural networks for model the minimum amount of information needed f
     * torch-geometric==2.0.3
     * torch-scatter==2.0.8
     * torch-sparse==0.6.12
+    * wandb
+   
 
-## Experiment: Optimal Minibatch:
-* git checkout sid/speed
-* In compare7.sh:
-    * num_training_threads = 4
-    * n_rollout_threads = 2
-    * num_mini_batch = 1
-    * episode_lengths=(25n), we vary n
-    * num_env_steps = episode_lengths * n_rollout_threads
-    * Then mini_batch_size = n * n_rollout_threads/2 * 15/num_mini_batch
-* Run with different values of n and record Training steps per second for each mini_batch_size
-* Results: https://www.desmos.com/calculator/b97lzbau8q
-    * Optimal mini_batch_size ~= 250
+## Syntax to Train the File
+The .sh files are used to run batchs files to train this code. The base .sh file to run is sat_train.sh. If you would like to run the code from the terminal, the syntax is as follows:
+
+ python -u onpolicy/scripts/train_mpe.py --use_valuenorm --use_popart --project_name "cent_obs_3"  --env_name "GraphMPE" --algorithm_name "rmappo" --seed 0 --experiment_name "crap_bad" --scenario_name "navigation_graph" --num_agents=3 --n_training_threads 1 --n_rollout_threads 2 --num_mini_batch 1  --episode_length 25 --num_env_steps 2000  --ppo_epoch 10 --use_ReLU --gain 0.01 --lr 7e-4 --critic_lr 7e-4 --user_name "marl"  --use_cent_obs True --auto_mini_batch_size --target_mini_batch_size 128 
+ 
+scenario_name refers to the scenario type that you want the problem to be tested on. Navigation_graph is for navigating with a GNN, whereas navigation is for navigation with standard MARL. 
+
+experiment_name is a custom name to be able to find that set of experiments in wandb later
+
+algorithm_name is the type of algorithm that you want to test in the space environment.
+
+
+ 
+
+## Syntax to Test the File
+Run from the root folder. You need to have a file directory, which contains a config.yaml file, an actor.pt file, and a critic.pt file. in this example, these files are stored at '/Users/sdolan/test_files'. For a full list of parameters that you can change when evaluating the model, look at the eval_mpe.py file.
+
+python onpolicy/scripts/eval_mpe.py --model_dir='/Users/sdolan/test_files' --render_episodes=2 --world_size=2 --num_agents=3 --num_obstacles=3 
+
+
 
 ## Troubleshooting:
 * `OMP: Error #15: Initializing libiomp5.dylib, but found libomp.dylib already initialized.`: Install nomkl by running [`conda install nomkl`](https://stackoverflow.com/questions/53014306/error-15-initializing-libiomp5-dylib-but-found-libiomp5-dylib-already-initial)
