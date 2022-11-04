@@ -1,7 +1,8 @@
 #!/usr/bin/env python
+import wandb
+# wandb.init(project="Satellite Minimum Information", entity="sydneyd")
 import argparse
 from distutils.util import strtobool 
-import wandb
 import socket
 import setproctitle
 import numpy as np

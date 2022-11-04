@@ -37,34 +37,19 @@ def MPEEnv(args:argparse.Namespace):
     """
 
    
-    
-    if args.world_type in ['satellite']:
-         # load scenario from script
-        scenario = load(args.scenario_name + ".py").SatelliteScenario()
-        # create world
-        world = scenario.make_world(args=args)
-        from multiagent.environment import SatelliteMultiAgentOrigEnv as MultiAgentEnv
-        env = MultiAgentEnv(world=world, reset_callback=scenario.reset_world, 
-                            reward_callback=scenario.reward,
-                            observation_callback=scenario.observation,
-                            done_callback=scenario.done,
-                            info_callback=scenario.info_callback if 
-                            hasattr(scenario, 'info_callback') else None)
-        
-    else:
-        if args.algorithm_name in ['mappo', 'rmappo']:
-            from multiagent.environment import MultiAgentPPOEnv as MultiAgentEnv
-        else:
-            from multiagent.environment import MultiAgentOffPolicyEnv as MultiAgentEnv
-    ##### # create world
-        scenario = load(args.scenario_name + ".py").Scenario()
-        world = scenario.make_world(args=args)
-        env = MultiAgentEnv(world=world, reset_callback=scenario.reset_world,
-                                reward_callback=scenario.reward, 
-                                observation_callback=scenario.observation,
-                                info_callback=scenario.info_callback if 
-                                hasattr(scenario, 'info_callback') else None,
-                                local_obs=args.local_obs)
+
+        # load scenario from script
+    scenario = load(args.scenario_name + ".py").SatelliteScenario()
+    # create world
+    world = scenario.make_world(args=args)
+    from multiagent.environment import SatelliteMultiAgentOrigEnv as MultiAgentEnv
+    env = MultiAgentEnv(world=world, reset_callback=scenario.reset_world, 
+                        reward_callback=scenario.reward,
+                        observation_callback=scenario.observation,
+                        done_callback=scenario.done,
+                        info_callback=scenario.info_callback if 
+                        hasattr(scenario, 'info_callback') else None)
+
 
     return env
 
@@ -79,32 +64,23 @@ def GraphMPEEnv(args):
     # create world
     # world = scenario.make_world(args=args)
 
-    from multiagent.environment import SatelliteMultiAgentGraphEnv, MultiAgentGraphEnv
-    if args.world_type in ['satellite']:
-        scenario = load(args.scenario_name + ".py").SatelliteScenario() 
-        # create world
-        world = scenario.make_world(args=args)
+    from multiagent.environment import SatelliteMultiAgentGraphEnv
+    scenario = load(args.scenario_name + ".py").SatelliteScenario() 
+    # create world
+    world = scenario.make_world(args=args)
 
-        # print('args goal type is '  + str(args.goal_type))
-        env = SatelliteMultiAgentGraphEnv(world=world, reset_callback=scenario.reset_world, 
-                            reward_callback=scenario.reward, 
-                            observation_callback=scenario.observation, 
-                            graph_observation_callback=scenario.graph_observation,
-                            info_callback=scenario.info_callback, 
-                            done_callback=scenario.done,
-                            id_callback=scenario.get_id,
-                            update_graph=scenario.update_graph,
-                            goal_type = args.goal_type,
-                            shared_viewer=False)
-    else:
-        env = MultiAgentGraphEnv(world=world, reset_callback=scenario.reset_world,
+    # print('args goal type is '  + str(args.goal_type))
+    env = SatelliteMultiAgentGraphEnv(world=world, reset_callback=scenario.reset_world, 
                         reward_callback=scenario.reward, 
-                        observation_callback=scenario.observation,
+                        observation_callback=scenario.observation, 
                         graph_observation_callback=scenario.graph_observation,
-                        update_graph=scenario.update_graph, 
+                        info_callback=scenario.info_callback, 
+                        done_callback=scenario.done,
                         id_callback=scenario.get_id,
-                        info_callback=scenario.info_callback,
-                        local_obs=args.local_obs)
+                        update_graph=scenario.update_graph,
+                        goal_type = args.goal_type,
+                        shared_viewer=False)
+  
 
     return env
 

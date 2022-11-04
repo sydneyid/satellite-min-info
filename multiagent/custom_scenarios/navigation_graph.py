@@ -12,7 +12,7 @@ from scipy import sparse
 import os,sys
 sys.path.append(os.path.abspath(os.getcwd()))
 
-from multiagent.core import Agent, Landmark, Entity, World, SatWorld
+from multiagent.core import Agent, Landmark, Entity,  SatWorld
 from multiagent.scenario import BaseScenario
 
 entity_mapping = {'agent': 0, 'landmark': 1, 'obstacle':2}
@@ -552,25 +552,12 @@ if __name__ == "__main__":
     args = Args()
 
     
-    if args.world_type in ['satellite']:
-        # create multiagent environment 
-        scenario = SatelliteScenario()
-        # create world
-        world = scenario.make_world(args)    
-        env = SatelliteMultiAgentGraphEnv(world=world, reset_callback=scenario.reset_world, 
-                            reward_callback=scenario.reward, 
-                            observation_callback=scenario.observation, 
-                            graph_observation_callback=scenario.graph_observation,
-                            info_callback=scenario.info_callback, 
-                            done_callback=scenario.done,
-                            id_callback=scenario.get_id,
-                            update_graph=scenario.update_graph,
-                            shared_viewer=False)   
-    else:
-        scenario = Scenario()
-        # create world
-        world = scenario.make_world(args)   
-        env = MultiAgentGraphEnv(world=world, reset_callback=scenario.reset_world, 
+    
+    # create multiagent environment 
+    scenario = SatelliteScenario()
+    # create world
+    world = scenario.make_world(args)    
+    env = SatelliteMultiAgentGraphEnv(world=world, reset_callback=scenario.reset_world, 
                         reward_callback=scenario.reward, 
                         observation_callback=scenario.observation, 
                         graph_observation_callback=scenario.graph_observation,
@@ -578,7 +565,7 @@ if __name__ == "__main__":
                         done_callback=scenario.done,
                         id_callback=scenario.get_id,
                         update_graph=scenario.update_graph,
-                        shared_viewer=False)
+                        shared_viewer=False)   
 
     # render call to create viewer window
     env.render()
