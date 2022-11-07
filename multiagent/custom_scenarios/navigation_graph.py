@@ -9,6 +9,7 @@ import argparse
 import numpy as np
 from numpy import ndarray as arr
 from scipy import sparse
+import math
 import os,sys
 sys.path.append(os.path.abspath(os.getcwd()))
 
@@ -88,9 +89,6 @@ class SatelliteScenario(BaseScenario):
         
 
         world = SatWorld()
-        #print("Doing the SatWorld thing ")
-        ####################
-        # world = World()
         # graph related attributes
         world.cache_dists = True # cache distance between all entities
         world.graph_mode = True
@@ -180,37 +178,55 @@ class SatelliteScenario(BaseScenario):
         ####### set random positions for entities ###########
         # set random static obstacles first
         for obstacle in world.obstacles:
-            obstacle.state.p_pos = 0.8 * np.random.uniform(-self.world_size/2, 
-                                                            self.world_size/2, 
-                                                            world.dim_p)
-            obstacle.state.p_vel = np.zeros(world.dim_p)
-            #print('obstacle positon is '+ str(obstacle.state.p_pos))
-            #print('obstacle positon is '+ str(obstacle.state.p_vel))
+
+            random_a = np.random.uniform(6776, 6777,1)
+            random_e = np.random.uniform(.0001, 0.01,1)
+            random_i = np.random.uniform(98.7*(math.pi/180), 99.0* (math.pi/180),1)
+            random_omega = np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
+            random_w = np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
+            random_M = np.random.uniform(15*(math.pi/180), 15*(math.pi/180),1)
+
+            obstacle.state.a = random_a
+            obstacle.state.e = random_e
+            obstacle.state.i = random_i
+            obstacle.state.omega = random_omega
+            obstacle.state.w = random_w
+            obstacle.state.M= random_M
+
 
         #####################################################
 
         # set agents at random positions not colliding with obstacles
         num_agents_added = 0
         agents_added = []
-        #print('world size si ' + str(self.world_size))
         while True:
+            
             if num_agents_added == self.num_agents:
                 break
-		
-            random_pos = np.random.uniform(-self.world_size/2, 
-                                            self.world_size/2, 
-                                            world.dim_p)
-            agent_size = world.agents[num_agents_added].size
-            obs_collision = self.is_obstacle_collision(random_pos, agent_size, world)
-            agent_collision = self.check_agent_collision(random_pos, agent_size, agents_added)
-            if not obs_collision and not agent_collision:
-                world.agents[num_agents_added].state.p_pos = random_pos
-                world.agents[num_agents_added].state.p_vel = (1/1000)*np.ones(world.dim_p)
-                world.agents[num_agents_added].state.c = np.zeros(world.dim_c)
-                agents_added.append(world.agents[num_agents_added])
-                num_agents_added += 1
-                #print('\nworld agents positon is '+ str(random_pos))
-                #print('world velocity is '+ str( (1/1000)*np.ones(world.dim_p) ))
+
+            random_a = np.random.uniform(6676, 6677,1)
+            random_e = np.random.uniform(.0001, 0.001,1)
+            random_i = np.random.uniform(98.7*(math.pi/180), 99.0* (math.pi/180),1)
+            random_omega = np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
+            random_w = np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
+            random_M = np.random.uniform(15*(math.pi/180), 15*(math.pi/180),1)
+
+            # agent_size = world.agents[num_agents_added].size
+            # obs_collision = self.is_obstacle_collision(random_pos, agent_size, world)
+            # agent_collision = self.check_agent_collision(random_pos, agent_size, agents_added)
+            # if not obs_collision and not agent_collision:
+            world.agents[num_agents_added].state.a = random_a
+            world.agents[num_agents_added].state.e = random_e
+            world.agents[num_agents_added].state.i = random_i
+            world.agents[num_agents_added].state.omega = random_omega
+            world.agents[num_agents_added].state.w = random_w
+            world.agents[num_agents_added].state.M= random_M
+
+                # world.agents[num_agents_added].state.p_vel = (1/1000)*np.ones(world.dim_p)
+            world.agents[num_agents_added].state.c = np.zeros(world.dim_c)
+            agents_added.append(world.agents[num_agents_added])
+            num_agents_added += 1
+
         #####################################################
         
         # set scripted agents goals at random positions not colliding with obstacles
@@ -218,20 +234,29 @@ class SatelliteScenario(BaseScenario):
         while True:
             if num_scripted_agents_added == self.num_scripted_agents:
                 break
-            random_pos = np.random.uniform(-self.world_size/2, 
-                                            self.world_size/2, 
-                                            world.dim_p)
-            agent_size = world.scripted_agents[num_scripted_agents_added].size
-            obs_collision = self.is_obstacle_collision(random_pos, agent_size, world)
-            agent_collision = self.check_agent_collision(random_pos, agent_size, agents_added)
-            if not obs_collision and not agent_collision:
-                world.scripted_agents[num_scripted_agents_added].state.p_pos = random_pos
-                world.scripted_agents[num_scripted_agents_added].state.p_vel = np.zeros(world.dim_p)
-                world.scripted_agents[num_scripted_agents_added].state.c = np.zeros(world.dim_c)
-                agents_added.append(world.scripted_agents[num_scripted_agents_added])
-                num_scripted_agents_added += 1
-                print('\nscripted agents positon is '+ str(random_pos))
-                print('world velocity is '+ str( np.zeroes(world.dim_p) ))
+
+            random_a = 6677.1 #np.random.uniform(6676, 6677,1)
+            random_e = .001 #np.random.uniform(.0001, 0.001,1)
+            random_i = 99.1* math.pi/180 # np.random.uniform(98.7*(math.pi/180), 99.0* (math.pi/180),1)
+            random_omega =60*math.pi/180 #np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
+            random_w = 60*math.pi/180 #np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
+            random_M = 15*math.pi/180 #np.random.uniform(15*(math.pi/180), 15*(math.pi/180),1)
+
+            # agent_size = world.agents[num_agents_added].size
+            # obs_collision = self.is_obstacle_collision(random_pos, agent_size, world)
+            # agent_collision = self.check_agent_collision(random_pos, agent_size, agents_added)
+            # if not obs_collision and not agent_collision:
+            world.scripted_agents[num_scripted_agents_added].state.a = random_a
+            world.scripted_agents[num_scripted_agents_added].state.e = random_e
+            world.scripted_agents[num_scripted_agents_added].state.i = random_pos
+            world.scripted_agents[num_scripted_agents_added].state.omega = random_omega
+            world.scripted_agents[num_scripted_agents_added].state.w = random_w
+            world.scripted_agents[num_scripted_agents_added].state.M= random_M
+
+            agents_added.append(world.scripted_agents[num_scripted_agents_added])
+            num_scripted_agents_added += 1
+
+
         #####################################################
 
         # set landmarks (goals) at random positions not colliding with obstacles 
@@ -241,21 +266,28 @@ class SatelliteScenario(BaseScenario):
         while True:
             if num_goals_added == self.num_agents:
                 break
-            random_pos = 0.8 * np.random.uniform(-self.world_size/2, 
-                                                self.world_size/2, 
-                                                world.dim_p)
-            goal_size = world.landmarks[num_goals_added].size
-            obs_collision = self.is_obstacle_collision(random_pos, goal_size, 
-                                                world)
-            landmark_collision = self.is_landmark_collision(random_pos, 
-                                                goal_size, 
-                                                world.landmarks[:num_goals_added])
-            if not landmark_collision and not obs_collision:
-                world.landmarks[num_goals_added].state.p_pos = random_pos
-                world.landmarks[num_goals_added].state.p_vel = np.zeros(world.dim_p)
-                num_goals_added += 1
-               # print('\nagents goal positon is '+ str(random_pos))
-               # print('goals velocity is '+ str( np.zeros(world.dim_p) ))
+            random_a = 6677.1 #np.random.uniform(6676, 6677,1)
+            random_e = .001 #np.random.uniform(.0001, 0.001,1)
+            random_i = 99.1* math.pi/180 # np.random.uniform(98.7*(math.pi/180), 99.0* (math.pi/180),1)
+            random_omega =60*math.pi/180 #np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
+            random_w = 60*math.pi/180 #np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
+            random_M = 15*math.pi/180 #np.random.uniform(15*(math.pi/180), 15*(math.pi/180),1)
+
+            # agent_size = world.agents[num_agents_added].size
+            # obs_collision = self.is_obstacle_collision(random_pos, agent_size, world)
+            # agent_collision = self.check_agent_collision(random_pos, agent_size, agents_added)
+            # if not obs_collision and not agent_collision:
+            world.landmarks[num_goals_added].state.a = random_a
+            world.landmarks[num_goals_added].state.e = random_e
+            world.landmarks[num_goals_added].state.i = random_i
+            world.landmarks[num_goals_added].state.omega = random_omega
+            world.landmarks[num_goals_added].state.w = random_w
+            world.landmarks[num_goals_added].state.M= random_M
+
+            # agents_added.append(world.scripted_agents[num_goals_added])
+            num_goals_added += 1
+
+          
         #####################################################
 
         ############ find minimum times to goals ############
@@ -274,15 +306,15 @@ class SatelliteScenario(BaseScenario):
         collisions = 0
         occupied_landmarks = 0
         goal = world.get_entity('landmark', agent.id)
-        dist = np.sqrt(np.sum(np.square(agent.state.p_pos - 
-                                        goal.state.p_pos)))
+        dist = np.sqrt(np.sum(np.square(agent.state.a - 
+                                        goal.state.a)))
         world.dist_left_to_goal[agent.id] = dist
         # only update times_required for the first time it reaches the goal
         if dist < self.min_dist_thresh and (world.times_required[agent.id] == -1):
             world.times_required[agent.id] = world.current_time_step * world.dt
 
         if agent.collide:
-            if self.is_obstacle_collision(agent.state.p_pos, agent.size, world):
+            if self.is_obstacle_collision(agent.state.a, agent.size, world):
                 world.num_obstacle_collisions[agent.id] += 1
             for a in world.agents:
                 if a is agent: continue
@@ -305,7 +337,7 @@ class SatelliteScenario(BaseScenario):
         # pos is entity position "entity.state.p_pos"
         collision = False
         for obstacle in world.obstacles:
-            delta_pos = obstacle.state.p_pos - pos
+            delta_pos = obstacle.state.a - pos
             dist = np.linalg.norm(delta_pos)
             dist_min = obstacle.size + entity_size
             if dist < dist_min:
@@ -318,7 +350,7 @@ class SatelliteScenario(BaseScenario):
         collision = False
         if len(agent_added):
             for agent in agent_added:
-                delta_pos = agent.state.p_pos - pos
+                delta_pos = agent.state.a - pos
                 dist = np.linalg.norm(delta_pos)
                 if dist < (agent.size + agent_size):
                     collision = True
@@ -327,15 +359,16 @@ class SatelliteScenario(BaseScenario):
 
     # check collision of agent with another agent
     def is_collision(self, agent1:Agent, agent2:Agent) -> bool:
-        delta_pos = agent1.state.p_pos - agent2.state.p_pos
+        delta_pos = agent1.state.a - agent2.state.a
         dist = np.linalg.norm(delta_pos)
+
         dist_min = agent1.size + agent2.size
         return True if dist < dist_min else False
 
     def is_landmark_collision(self, pos, size:float, landmark_list:List) -> bool:
         collision = False
         for landmark in landmark_list:
-            delta_pos = landmark.state.p_pos - pos
+            delta_pos = landmark.state.a - pos
             dist = np.sqrt(np.sum(np.square(delta_pos)))
             dist_min = size + landmark.size
             if dist < dist_min:
@@ -348,39 +381,53 @@ class SatelliteScenario(BaseScenario):
         assert agent.max_speed is not None, "Agent needs to have a max_speed"
         agent_id = agent.id
         # get the goal associated to this agent
-        landmark = world.get_entity(entity_type='landmark', id=agent_id)
-        dist = np.sqrt(np.sum(np.square(agent.state.p_pos - 
-                                        landmark.state.p_pos)))
-        min_time = dist / agent.max_speed
+        # landmark = world.get_entity(entity_type='landmark', id=agent_id)
+        # dist = np.sqrt(np.sum(np.square(agent.state.p_pos - 
+        #                                 landmark.state.p_pos)))
+        # min_time = dist / agent.max_speed
+
+        min_time = 6*3600
         agent.goal_min_time = min_time
         return min_time
 
     # done condition for each agent
     def done(self, agent:Agent, world:SatWorld) -> bool:
         # if we are using dones then return appropriate done
-        if self.use_dones:
-            landmark = world.get_entity('landmark', agent.id)
-            dist = np.sqrt(np.sum(np.square(agent.state.p_pos - 
-                                            landmark.state.p_pos)))
-            if dist < self.min_dist_thresh:
-                return True
-            else:
-                return False
+        #### SYDNEY YOU HARDCODED IT IN!!!!!
+        # if self.use_dones:
+        #     landmark = world.get_entity('landmark', agent.id)
+        #     dist = np.sqrt(np.sum(np.square(agent.state.p_pos - 
+        #                                     landmark.state.p_pos)))
+        #     if dist < self.min_dist_thresh:
+        #         return True
+        #     else:
+        #         return False
         # it not using dones then return done 
         # only when episode_length is reached
+        # else:
+        if world.current_time_step >= world.world_length:
+            return True
         else:
-            if world.current_time_step >= world.world_length:
-                return True
-            else:
-                return False
+            return False
 
     def reward(self, agent:Agent, world:SatWorld) -> float:
         # Agents are rewarded based on distance to 
         # its landmark, penalized for collisions
         rew = 0
         agents_goal = world.get_entity(entity_type='landmark', id=agent.id)
-        dist_to_goal = np.sqrt(np.sum(np.square(agent.state.p_pos - 
-                                                agents_goal.state.p_pos)))
+        # dist_to_goal = np.sqrt(np.sum(np.square(agent.state.a - 
+                                                # agents_goal.state.p_pos)))
+
+        ### WARNING -------- 
+        #### Hardcoding the goal to be that you are close with the semmi major axis 
+        if isinstance(agent.state.a,(list,np.ndarray)):
+            agent.state.a = agent.state.a[0]
+        if isinstance(agents_goal.state.a,(list,np.ndarray)):
+            agents_goal.state.a = agents_goal.state.a[0]
+
+
+        dist_to_goal = abs(agent.state.a - agents_goal.state.a) #+ abs(agent.state.a - agents_goal.state.a)
+        # print('dist to goal is ' + str(dist_to_goal) +' min dist threshold ' +str(self.min_dist_thresh))
         if dist_to_goal < self.min_dist_thresh:
             rew += self.goal_rew
         else:
@@ -393,12 +440,14 @@ class SatelliteScenario(BaseScenario):
                 if self.is_collision(a, agent):
                     rew -= self.collision_rew
             
-            if self.is_obstacle_collision(pos=agent.state.p_pos,
+            if self.is_obstacle_collision(pos=agent.state.a,
                                         entity_size=agent.size, world=world):
                 rew -= self.collision_rew
         return rew
 
     def observation(self, agent:Agent, world:SatWorld, local_obs:bool=None) -> arr:
+
+        ##### THIS HAS TO BE RE-WRITTEN LATER 
         """
             Return:
                 [agent_vel, agent_pos, goal_pos]
@@ -408,8 +457,15 @@ class SatelliteScenario(BaseScenario):
         # get positions of all entities in this agent's reference frame
         goal_pos = []
         agents_goal = world.get_entity('landmark', agent.id)
-        goal_pos.append(agents_goal.state.p_pos - agent.state.p_pos)
-        return np.concatenate([agent.state.p_vel, agent.state.p_pos] + goal_pos)
+        if isinstance(agent.state.a,(list,np.ndarray)):
+            agent.state.a = agent.state.a[0]
+            if isinstance(agent.state.a,(list,np.ndarray)):
+                agent.state.a = agent.state.a[0]
+        goal_pos.append(agents_goal.state.a - agent.state.a)
+        xx= np.asarray(  [agent.state.a, agent.state.e[0],agent.state.i[0], agent.state.omega[0], agent.state.w[0], agent.state.M[0],  goal_pos[0] ]   )  
+
+        return xx 
+        #np.concatenate([np.asarray(agent.state.a), agent.state.e,agent.state.i, agent.state.omega, agent.state.w, agent.state.M] + goal_pos)
 
     def get_id(self, agent:Agent) -> arr:
         return np.array([agent.global_id])
@@ -472,59 +528,103 @@ class SatelliteScenario(BaseScenario):
             world.edge_weight = dists[row, col]
         elif world.graph_feat_type == 'relative':
             world.edge_weight = dists[row, col]
+
+    def remove_array_doubles(self, a) -> float:
+        if isinstance(a,(list,np.ndarray)):
+                a = a[0]
+                if isinstance(a,(list,np.ndarray)):
+                    a = a[0]
+        return a
+
     
     def _get_entity_feat_global(self, entity:Entity, world:SatWorld) -> arr:
         """
             Returns: ([velocity, position, goal_pos, entity_type])
             in global coords for the given entity
         """
-        pos = entity.state.p_pos
-        vel = entity.state.p_vel
+
+        a = self.remove_array_doubles(entity.state.a)
+        e = self.remove_array_doubles(entity.state.e)
+        i = self.remove_array_doubles(entity.state.i)
+        omega  = self.remove_array_doubles(entity.state.omega)
+        w = self.remove_array_doubles(entity.state.w)
+        M =  self.remove_array_doubles(entity.state.M)
+        # vel = entity.state.p_vel
         if 'agent' in entity.name:
-            goal_pos = world.get_entity('landmark', entity.id).state.p_pos
+            goal_pos = self.remove_array_doubles(world.get_entity('landmark', entity.id).state.a)
             entity_type = entity_mapping['agent']
         elif 'landmark' in entity.name:
-            goal_pos = pos
+            goal_pos = a
             entity_type = entity_mapping['landmark']
         elif 'obstacle' in entity.name:
-            goal_pos = pos
+            goal_pos = a
             entity_type = entity_mapping['obstacle']
         else:
             raise ValueError(f'{entity.name} not supported')
 
         if self.goal_sharing == False:
-            return np.hstack([vel, pos,  entity_type])
+            return np.hstack([a,e,i,omega,w,M,  goal_pos,  entity_type])
 
-        return np.hstack([vel, pos, goal_pos, entity_type])
+        
+        
+        cc = np.hstack([a,e,i,omega,w,M, goal_pos, entity_type])
+        if len(cc)!=8:
+            print('enitiy feat global is returnign length:  '+str(len(cc)))
+            print('bro what the lhell is going on a is '+ str(a))
+            print('state w '+str(entity.state.w))
+            print('entity state goal pos '+str(goal_pos))
+        return cc
 
     def _get_entity_feat_relative(self, agent:Agent, entity:Entity, world:SatWorld) -> arr:
         """
             Returns: ([velocity, position, goal_pos, entity_type])
             in coords relative to the `agent` for the given entity
         """
-        agent_pos = agent.state.p_pos
-        agent_vel = agent.state.p_vel
-        entity_pos = entity.state.p_pos
-        entity_vel = entity.state.p_vel
-        rel_pos = entity_pos - agent_pos
-        rel_vel = entity_vel - agent_vel
+        # print('ios it enetering ENTITY FEAT RELATIVE')
+        entity_a = entity.state.a
+        entity_e = entity.state.a
+        entity_i = entity.state.a
+        entity_omega  = entity.state.omega
+        entity_w = entity.state.w
+        entity_M =  entity.state.M
+
+        agent_a = agent.state.a
+        agent_e = agent.state.a
+        agent_i = agent.state.a
+        agent_omega  = agent.state.omega
+        agent_w = agent.state.w
+        agent_M =  agent.state.M
+
+        # agent_pos = agent.state.p_pos
+        # agent_vel = agent.state.p_vel
+        # entity_pos = entity.state.p_pos
+        # entity_vel = entity.state.p_vel
+        rel_a = entity_a - agent_a
+        rel_e = entity_e - agent_e
+        rel_i = entity_i - agent_i
+        rel_omega = entity_omega - agent_omega
+        rel_w = entity_w - agent_w
+        rel_M = entity_M - agent_M
+        # rel_vel = entity_vel - agent_vel
         if 'agent' in entity.name:
-            goal_pos = world.get_entity('landmark', entity.id).state.p_pos
-            rel_goal_pos = goal_pos - agent_pos
+            goal_pos = world.get_entity('landmark', entity.id).state.a
+            rel_goal_pos = goal_pos - agent_a
             entity_type = entity_mapping['agent']
         elif 'landmark' in entity.name:
-            rel_goal_pos = rel_pos
+            rel_goal_pos = rel_a
             entity_type = entity_mapping['landmark']
         elif 'obstacle' in entity.name:
-            rel_goal_pos = rel_pos
+            rel_goal_pos = rel_a
             entity_type = entity_mapping['obstacle']
         else:
             raise ValueError(f'{entity.name} not supported')
 
+            # print('rel_a  '+str(rel_a) + 'rel e is ' +str(rel_e))
         if args.goal_sharing == False:
-            return np.hstack([rel_vel, rel_pos,  entity_type])
+            return np.hstack([rel_a,rel_e,rel_i,rel_omega,rel_w,rel_M,  entity_type])
 
-        return np.hstack([rel_vel, rel_pos, rel_goal_pos, entity_type])
+        return np.hstack([rel_a,rel_e,rel_i,rel_omega,rel_w,rel_M, rel_goal_pos, entity_type])
+        # np.hstack([rel_vel, rel_pos, rel_goal_pos, entity_type])
 
 # actions: [None, ←, →, ↓, ↑, comm1, comm2]
 if __name__ == "__main__":
@@ -582,9 +682,8 @@ if __name__ == "__main__":
         for i, policy in enumerate(policies):
             act_n.append(policy.action(obs_n[i]))
         # step environment
-        #print('\nact n below is \n' + str(act_n))
         obs_n, agent_id_n, node_obs_n, adj_n, reward_n, done_n, info_n = env.step(act_n)
-        # print(obs_n[0].shape, node_obs_n[0].shape, adj_n[0].shape)
+
 
         # render all agent views
         env.render()

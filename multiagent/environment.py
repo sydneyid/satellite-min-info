@@ -2,6 +2,7 @@ import gym
 from gym import spaces
 from gym.envs.registration import EnvSpec
 import numpy as np
+import math
 from typing import Callable, List, Tuple, Dict, Union, Optional
 from multiagent.core import Agent, Landmark,  SatWorld
 from multiagent.multi_discrete import MultiDiscrete
@@ -185,7 +186,7 @@ class SatelliteMultiAgentBaseEnv(gym.Env):
     # set env action for a particular agent
     def _set_action(self, action, agent:Agent, action_space, 
                     time:Optional=None) -> None:
-        agent.action.u = np.zeros(self.world.dim_p)
+        agent.action.u = np.zeros(self.world.dim_control)
         agent.action.c = np.zeros(self.world.dim_c)
         # process action
         if isinstance(action_space, MultiDiscrete):
@@ -205,7 +206,7 @@ class SatelliteMultiAgentBaseEnv(gym.Env):
             # physical action
             if self.discrete_action_input:
                 #print('if statement discrete action input')
-                agent.action.u = np.zeros(self.world.dim_p)
+                agent.action.u = np.zeros(self.world.dim_control)
                 # process discrete action
                 if action[0] == 1: agent.action.u[0] = -1.0
                 if action[0] == 2: agent.action.u[0] = +1.0
@@ -227,7 +228,7 @@ class SatelliteMultiAgentBaseEnv(gym.Env):
                 else:
                    # print('else stateent, final else self.force_discrete_action') 	
                     agent.action.u = action[0]
-            sensitivity = 5.0
+            sensitivity = 5.0 #### Resting testint testing testing testing
             if agent.accel is not None:
                 sensitivity = agent.accel
             agent.action.u *= sensitivity
@@ -735,11 +736,11 @@ class SatelliteMultiAgentBaseEnv2(gym.Env):
 
             # physical action space
             if self.discrete_action_space:
-                u_action_space = spaces.Discrete(world.dim_p * 2 + 1)
+                u_action_space = spaces.Discrete(world.dim_control * 2 + 1)
             else:
                 u_action_space = spaces.Box(low=-agent.u_range, 
                                             high=+agent.u_range, 
-                                            shape=(world.dim_p,), 
+                                            shape=(world.dim_control,), 
                                             dtype=np.float32)
             if agent.movable:
                 total_action_space.append(u_action_space)
@@ -845,7 +846,7 @@ class SatelliteMultiAgentBaseEnv2(gym.Env):
     # set env action for a particular agent
     def _set_action(self, action, agent:Agent, action_space, 
                     time:Optional=None) -> None:
-        agent.action.u = np.zeros(self.world.dim_p)
+        agent.action.u = np.zeros(self.world.dim_control)
         agent.action.c = np.zeros(self.world.dim_c)
         # process action
         if isinstance(action_space, MultiDiscrete):
@@ -865,7 +866,7 @@ class SatelliteMultiAgentBaseEnv2(gym.Env):
             # physical action
             if self.discrete_action_input:
                 #print('if statement discrete action input')
-                agent.action.u = np.zeros(self.world.dim_p)
+                agent.action.u = np.zeros(self.world.dim_control)
                 # process discrete action
                 if action[0] == 1: agent.action.u[0] = -1.0
                 if action[0] == 2: agent.action.u[0] = +1.0
