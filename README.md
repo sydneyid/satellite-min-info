@@ -1,9 +1,10 @@
 # satellite-min-info
-Using graph neural networks for model the minimum amount of information needed for successful collision avoidance in space traffic management. 
+Using graph neural networks for model the minimum amount of information needed for successful collision avoidance in proximity operations for satellites
 
 
 ## Dependencies:
-* [Multiagent-particle-envs](https://github.com/openai/multiagent-particle-envs): We have pulled the relevant folder from the repo to modify it.
+These are the pacakges and versions that are requried to run tihs repository.
+
     * `pip install gym==0.10.5` (newer versions also seem to work)
     * `pip install numpy-stl`
     * torch==1.8.0              
@@ -31,7 +32,6 @@ The syntax to train the file on one of the comparative baseline algorithms is:
 env_name is used to configure the environment for the regular multi agent case. Similarly, the scenario is for navigating without a GNN.
 
 
- 
 
 ## Syntax to Test the File
 Run from the root folder. You need to have a file directory, which contains a config.yaml file, an actor.pt file, and a critic.pt file. in this example, these files are stored at '/Users/sdolan/test_files'. For a full list of parameters that you can change when evaluating the model, look at the eval_mpe.py file.
