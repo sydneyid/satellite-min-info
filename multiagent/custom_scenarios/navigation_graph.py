@@ -521,7 +521,7 @@ class SatelliteScenario(BaseScenario):
         else:
             raise ValueError(f'{entity.name} not supported')
 
-        if args.goal_sharing == False:
+        if self.goal_sharing == False:
             return np.hstack([rel_vel, rel_pos,  entity_type])
 
         return np.hstack([rel_vel, rel_pos, rel_goal_pos, entity_type])

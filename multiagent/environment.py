@@ -508,6 +508,7 @@ class SatelliteMultiAgentGraphEnv(SatelliteMultiAgentBaseEnv):
                     done_callback:Callable=None,
                     update_graph:Callable=None,
                     goal_type:Callable=None,
+                    save_loc:bool=False,
                     shared_viewer:bool=True, 
                     discrete_action:bool=True,
                     local_obs:bool=False) -> None:
@@ -521,6 +522,7 @@ class SatelliteMultiAgentGraphEnv(SatelliteMultiAgentBaseEnv):
         self.id_callback = id_callback
         self.set_graph_obs_space()
         self.goal_type = goal_type
+        self.save_loc = save_loc
        # print('made it through sat world init')
 
     def set_graph_obs_space(self):
@@ -647,6 +649,22 @@ class SatelliteMultiAgentGraphEnv(SatelliteMultiAgentBaseEnv):
             reward_n = [[reward]] * self.n  # NOTE this line is similar to PPOEnv
         # print('satellite multiagent graph env')
 
+        if self.save_loc:
+            # print('\n\t\tsaved location '+str(obs_n[0]))
+            new_array = np.array(obs_n)
+            
+            agent_num=0
+            for agent in self.agents:
+                with open('observations_agent'+str(agent_num)+'.txt', 'a') as f:
+                    content = str(new_array[agent_num])
+                    f.write(str(new_array[agent_num][2]))
+                    f.write(' ')
+                    f.write(str(new_array[agent_num][3]))
+                    f.write('\n')
+                f.close()
+                agent_num+=1
+                
+                
         return obs_n, agent_id_n, node_obs_n, adj_n, reward_n, done_n, info_n
 
     def reset(self) -> Tuple[List, List, List, List]:

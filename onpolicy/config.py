@@ -216,6 +216,12 @@ def get_config():
                         help="The number of scripted agents in MPE")
     parser.add_argument("--local_obs", type=lambda x:bool(strtobool(x)), 
                         default=False, help="Whether to use local obs for navigation.py")
+    parser.add_argument("--goal_type", type=str, 
+                        default="fixed", help="whether or to change teh goal midway")
+    parser.add_argument("--goal_sharing", type=lambda x:bool(strtobool(x)), 
+                        default=True, help="whether or not the goal is shared")
+    parser.add_argument("--save_location", type=lambda x:bool(strtobool(x)), 
+                        default=False, help="whether or not to save the output for satellite visualization")
 
     # replay buffer parameters
     parser.add_argument("--episode_length", type=int,

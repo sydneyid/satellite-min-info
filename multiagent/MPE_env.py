@@ -79,6 +79,7 @@ def GraphMPEEnv(args):
                         id_callback=scenario.get_id,
                         update_graph=scenario.update_graph,
                         goal_type = args.goal_type,
+                        save_loc = args.save_location,
                         shared_viewer=False)
   
 
