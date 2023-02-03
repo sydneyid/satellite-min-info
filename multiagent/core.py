@@ -409,100 +409,71 @@ class SatWorld(object):
                     a = a[0]
         return a
 
-    def dynamics(self, s,u):
+    def dynamics(self, x,u):
 
-        goal =[ 6677.1, 0.001, 99.1* math.pi/180,60*math.pi/180 ,60*math.pi/180 ,15*math.pi/180 ]
-        # andom_a = 6677.1 #np.random.uniform(6676, 6677,1)
-        #     random_e = .001 #np.random.uniform(.0001, 0.001,1)
-        #     random_i = 99.1* math.pi/180 # np.random.uniform(98.7*(math.pi/180), 99.0* (math.pi/180),1)
-        #     random_omega =60*math.pi/180 #np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
-        #     random_w = 60*math.pi/180 #np.random.uniform(60*(math.pi/180), 60*(math.pi/180),1)
-        #     random_M = 
+                # goal =[ 6677.1, 0.001, 99.1* math.pi/180,60*math.pi/180 ,60*math.pi/180 ,15*math.pi/180 ]
+         mu = 398600 
+         g0 = 9.80665
+         Isp= 1500
+
+         a = x[0]
+         e=x[1]
+         i = x[2]
+         RAAN = x[3]
+         w = x[4]
+         nu = x[5]
         
-        # print('what is s, this definitely went wrong: '+str(s))
-        # try:
-        #     s = np.concatenate(s,axis =0) #np.asarray(s)
-        # except:
-        #     s= np.asarray(s)
-
-        # print('what is s, this definitely went wrong: '+str(s))
-        mu = 398600
-        a = self.remove_array_doubles(s[0])
-        ecc= self.remove_array_doubles(s[1])
-        i = self.remove_array_doubles(s[2])
-        omega = self.remove_array_doubles([3])
-        w = self.remove_array_doubles(s[4])
-        M = abs(self.remove_array_doubles(s[5]))
-        current_time = self.agents[0].t 
-
-
-        ### Goal State
-        a_di = goal[0]
-        ecc_di= goal[1]
-        i_di = goal[2]
-        omega_di = goal[3]
-        w_di = goal[4]
-
-        print('\t\t\tM at this point is : '+str(M) +' \t\t ecc is '+str(ecc))
-        nu = self.find_nu(M, abs(ecc))# nu -- true anomaly 
-        p= a_di*(1-ecc_di**2) #semilatus rectum
-        b = a_di* (  ( 1-ecc_di**2)**.5 ) #semi minor axis
-        h = (mu*p)**.5# angular momentum
-        theta = nu + w_di #argument of alittude
-        r = p/ ( 1+ ecc_di*math.cos(nu))  # magnitude of radius vector 
+        
+         h = (mu*a*(1-e**2))**.5
+         p  = a* (1-e**2)**.5
+         theta = w+nu
+         r = p/(1+e*math.cos(nu))
+         b = a*((1-e**2)**.5)
+        
+         adot = 2*((a**2)/h)* (e*math.sin(nu)*u[0] + (p/r)*u[1])
+         edot = (1/h)*(p*math.sin(nu)*u[0] + ((p+r)*math.cos(nu)+ r*e)*u[1] )
+         idot = r*(math.cos(theta)/h)*u[2]
+         Omegadot =( r*math.sin(theta)/(h*math.sin(i)))* u[2]
+         wdot = 0 #np.zeros((len(u),1))
+         nudot = h/(r**2)
         
 
-        n = (mu/(a_di**3))**.5
-        A = np.zeros((6,6))
-        A[5][0] =  -1.5* (n/a_di)
+         dxdt = np.asarray([adot,edot,idot,Omegadot,wdot,nudot])
+         
+         return dxdt
 
-        B = np.zeros((6,3))
-        B[0][0] = (2*(a_di**2)*ecc_di*math.sin(nu))/h
-        B[0][0] = (2*(a_di**2)*p)/(r*h)
-
-        B[1][0] = (p*math.sin(nu))/h
-        B[1][1] = ((p+r)*math.cos(nu)+ r*ecc_di)/h
+    def convert_type(self,x):
+        try: 
+            if type(x[0])==np.ndarray:
+                return x[0][0]
+        except:
+            return x
         
-        B[2][2] = r*math.cos(theta)/(h)
-
-        B[3][2] = r*math.sin(theta)/(h*math.sin(i_di))
-
-        B[4][0] = (-p*math.cos(nu))/(h*ecc_di)
-        B[4][0] = ((p+r)*math.sin(nu))/(h*ecc_di)
-        B[4][0] = (-(r*math.sin(theta)*math.cos(i_di)))/(h*math.sin(i_di))
-
-        B[5][0] = b*(p*math.cos(nu)-2*r*ecc_di)/(a_di*h*ecc_di)
-        B[5][1] = -(b*(p+r)*math.sin(nu))/(a_di*h*ecc_di)
-
-
-        # print(' S is '+ str(s))
-        # print('u is '+str(u))
-        s = np.asarray([a,ecc,i,omega,w,M])
-        u = np.asarray(u)
-        dsdt = (A.dot(s)).T + u.dot(np.array(B).T)
-        # print('dsdt is   '+str(dsdt))
-        return dsdt 
+        return x
 
     def integrate_sat_state(self, p_force):
-        mu= 398600
         for i,entity in enumerate(self.entities):
             x = [entity.state.a,entity.state.e,entity.state.i,entity.state.omega, entity.state.w, entity.state.M]
             if p_force[i]is None:
                 u = [0,0,0]
             else:
-                u = p_force[i]
+                u = p_force[i]*10**-3
 
             # print('x is '+ str(x))
-            # print('u is '+str(u))
+
+            # print('\t\tu is '+str(u))
             dsdt = self.dynamics(x,u) 
             x =x + dsdt*self.dt	
+            
+            print('computed dsdt x is '+ str(x))
 	
-            entity.state.a = x[0]
-            entity.state.e = x[1]
-            entity.state.i = x[2]
-            entity.state.omega = x[3]
-            entity.state.w = x[4]
-            entity.state.M = x[5]
+            entity.state.a = self.convert_type(x[0])
+            entity.state.e = self.convert_type(x[1])
+            entity.state.i = self.convert_type(x[2])
+            entity.state.omega = self.convert_type(x[3])
+            entity.state.w = self.convert_type(x[4])
+            entity.state.M = self.convert_type(x[5])
+            
 
             # if p_force[i] is not None:
                 # print('\np force from control is '+str(u) )#           #print('pvelbefore is '+ str(entity.state.p_vel))
