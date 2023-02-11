@@ -14,10 +14,56 @@ sys.path.append(os.path.abspath(os.getcwd()))
 
 from multiagent.core import Agent, Landmark, Entity,  SatWorld
 from multiagent.scenario import BaseScenario
+from scipy.optimize import linear_sum_assignment
 
 entity_mapping = {'agent': 0, 'landmark': 1, 'obstacle':2}
 
+
+def get_thetas(poses):
+    # compute angle (0,2pi) from horizontal
+    thetas = [None]*len(poses)
+    for i in range(len(poses)):
+        # (y,x)
+        thetas[i] = find_angle(poses[i])
+    return thetas
+
+
+def find_angle(pose):
+    # compute angle from horizontal
+    angle = np.arctan2(pose[1], pose[0])
+    if angle<0:
+        angle += 2*np.pi
+    return angle
+
+
+
+# class Scenario(BaseScenario):
+#     def __init__(self, num_agents=4, dist_threshold=0.1, arena_size=1, identity_size=0):
+#         self.num_agents = num_agents
+#         self.target_radius = 0.5 # fixing the target radius for now  
+#         self.ideal_theta_separation = (2*np.pi)/self.num_agents # ideal theta difference between two agents 
+#         self.arena_size = arena_size
+#         self.dist_thres = 0.05
+#         self.theta_thres = 0.1
+#         self.identity_size = identity_size
+
+
+
+   
+  
+    
+
 class SatelliteScenario(BaseScenario):
+    def __init__(self, num_agents=4, dist_threshold=0.1, arena_size=1, identity_size=0):
+        self.num_agents = num_agents
+        self.target_radius = 0.5 # fixing the target radius for now  
+        self.ideal_theta_separation = (2*np.pi)/self.num_agents # ideal theta difference between two agents 
+        self.arena_size = arena_size
+        self.dist_thres = 0.05
+        self.theta_thres = 0.1
+        self.identity_size = identity_size
+
+
     def make_world(self, args:argparse.Namespace) -> SatWorld:
         """
             Parameters in args
@@ -77,6 +123,9 @@ class SatelliteScenario(BaseScenario):
         self.episode_length = args.episode_length
         self.goal_type = args.goal_type
         self.goal_sharing = args.goal_sharing
+
+            
+            
         if not hasattr(args, 'max_edge_dist'):
             self.max_edge_dist = 1
             print('_'*60)
@@ -142,6 +191,10 @@ class SatelliteScenario(BaseScenario):
         # make initial conditions
         self.reset_world(world)
         return world
+    
+   
+
+     
 
     def reset_world(self, world:SatWorld) -> None:
         # metrics to keep track of
@@ -177,6 +230,22 @@ class SatelliteScenario(BaseScenario):
         """
             Randomly place agents and landmarks
         """
+        
+        # # set random initial states
+        # for agent in world.agents:
+        #     agent.state.p_pos = np.random.uniform(-self.arena_size, self.arena_size, world.dim_p)
+        #     agent.state.p_vel = np.zeros(world.dim_p)
+        #     agent.state.c = np.zeros(world.dim_c)
+        # for i, landmark in enumerate(world.landmarks):
+        #     # bound on the landmark position less than that of the environment for visualization purposes
+        #     landmark.state.p_pos = np.random.uniform(-.5*self.arena_size, .5*self.arena_size, world.dim_p)
+        #     landmark.state.p_vel = np.zeros(world.dim_p)
+
+        # world.steps = 0
+        # world.dists = []
+        
+        
+        
         ####### set random positions for entities ###########
         # set random static obstacles first
         for obstacle in world.obstacles:
@@ -374,29 +443,66 @@ class SatelliteScenario(BaseScenario):
             else:
                 return False
 
-    def reward(self, agent:Agent, world:SatWorld) -> float:
-        # Agents are rewarded based on distance to 
-        # its landmark, penalized for collisions
-        rew = 0
-        agents_goal = world.get_entity(entity_type='landmark', id=agent.id)
-        dist_to_goal = np.sqrt(np.sum(np.square(agent.state.p_pos - 
-                                                agents_goal.state.p_pos)))
-        if dist_to_goal < self.min_dist_thresh:
-            rew += self.goal_rew
-        else:
-            rew -= dist_to_goal
-        if agent.collide:
-            for a in world.agents:
-                # do not consider collision with itself
-                if a.id == agent.id:
-                    continue
-                if self.is_collision(a, agent):
-                    rew -= self.collision_rew
+
+    def info(self, agent, world):
+        return {'is_success': self.is_success, 'world_steps': world.steps,
+                'reward':self.joint_reward, 'dists':self.delta_dists.mean()}
+    
+
+    # def reward(self, agent:Agent, world:SatWorld) -> float:
+    #     # Agents are rewarded based on distance to 
+    #     # its landmark, penalized for collisions
+    #     rew = 0
+    #     agents_goal = world.get_entity(entity_type='landmark', id=agent.id)
+    #     dist_to_goal = np.sqrt(np.sum(np.square(agent.state.p_pos - 
+    #                                             agents_goal.state.p_pos)))
+    #     if dist_to_goal < self.min_dist_thresh:
+    #         rew += self.goal_rew
+    #     else:
+    #         rew -= dist_to_goal
+    #     if agent.collide:
+    #         for a in world.agents:
+    #             # do not consider collision with itself
+    #             if a.id == agent.id:
+    #                 continue
+    #             if self.is_collision(a, agent):
+    #                 rew -= self.collision_rew
             
-            if self.is_obstacle_collision(pos=agent.state.p_pos,
-                                        entity_size=agent.size, world=world):
-                rew -= self.collision_rew
-        return rew
+    #         if self.is_obstacle_collision(pos=agent.state.p_pos,
+    #                                     entity_size=agent.size, world=world):
+    #             rew -= self.collision_rew
+    #     return rew
+    
+    def reward(self, agent:Agent, world:SatWorld) -> float:
+        if agent.iden == 0:
+            landmark_pose = world.landmarks[0].state.p_pos
+            relative_poses = [agent.state.p_pos - landmark_pose for agent in world.agents]
+            thetas = get_thetas(relative_poses)
+            # anchor at the agent with min theta (closest to the horizontal line)
+            theta_min = min(thetas)
+            expected_poses = [landmark_pose + self.target_radius * np.array(
+                              [np.cos(theta_min + i*self.ideal_theta_separation), 
+                               np.sin(theta_min + i*self.ideal_theta_separation)])
+                              for i in range(self.num_agents)]
+            
+            dists = np.array([[np.linalg.norm(a.state.p_pos - pos) for pos in expected_poses] for a in world.agents])
+            # optimal 1:1 agent-landmark pairing (bipartite matching algorithm)
+            self.delta_dists = self._bipartite_min_dists(dists) 
+            world.dists = self.delta_dists
+
+            total_penalty = np.mean(np.clip(self.delta_dists, 0, 2))
+            self.joint_reward = -total_penalty
+            
+        return self.joint_reward
+    
+    
+    
+    
+    
+    def _bipartite_min_dists(self, dists):
+        ri, ci = linear_sum_assignment(dists)
+        min_dists = dists[ri, ci]
+        return min_dists
 
     def observation(self, agent:Agent, world:SatWorld, local_obs:bool=None) -> arr:
         """
@@ -410,6 +516,16 @@ class SatelliteScenario(BaseScenario):
         agents_goal = world.get_entity('landmark', agent.id)
         goal_pos.append(agents_goal.state.p_pos - agent.state.p_pos)
         return np.concatenate([agent.state.p_vel, agent.state.p_pos] + goal_pos)
+    
+    # def observation(self, agent, world):
+    #     # positions of all entities in this agent's reference frame
+    #     entity_pos = [entity.state.p_pos - agent.state.p_pos for entity in world.landmarks]
+    #     default_obs = np.concatenate([agent.state.p_vel] + [agent.state.p_pos] + entity_pos)
+    #     if self.identity_size != 0:
+    #         identified_obs = np.append(np.eye(self.identity_size)[agent.iden],default_obs)
+    #         return identified_obs
+    #     return default_obs
+
 
     def get_id(self, agent:Agent) -> arr:
         return np.array([agent.global_id])
