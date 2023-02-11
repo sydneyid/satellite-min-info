@@ -97,10 +97,10 @@ def parse_args(args, parser):
                         # args.world_type in ['satellite']:
     parser.add_argument("--world_type", type=str, 
                         default="ground", help="whether or not to use sat world environment")
-    parser.add_argument("--goal_type", type=str, 
-                        default="fixed", help="whether or to change teh goal midway")
-    parser.add_argument("--goal_sharing", type=lambda x:bool(strtobool(x)), 
-                        default=True, help="whether or not the goal is shared")
+    # parser.add_argument("--goal_type", type=str, 
+    #                     default="fixed", help="whether or to change teh goal midway")
+    # parser.add_argument("--goal_sharing", type=lambda x:bool(strtobool(x)), 
+    #                     default=True, help="whether or not the goal is shared")
 
 
     all_args = parser.parse_known_args(args)[0]
