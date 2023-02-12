@@ -460,6 +460,8 @@ class SatelliteScenario(BaseScenario):
     #         rew += self.goal_rew
     #     else:
     #         rew -= dist_to_goal
+            
+            
     #     if agent.collide:
     #         for a in world.agents:
     #             # do not consider collision with itself
@@ -474,7 +476,10 @@ class SatelliteScenario(BaseScenario):
     #     return rew
     
     def reward(self, agent:Agent, world:SatWorld) -> float:
-        if agent.iden == 0:
+        rew = 0 
+        # if agent.iden == 0:
+        if self.get_id( agent)[0]==0:
+
             landmark_pose = world.landmarks[0].state.p_pos
             relative_poses = [agent.state.p_pos - landmark_pose for agent in world.agents]
             thetas = get_thetas(relative_poses)
@@ -489,11 +494,11 @@ class SatelliteScenario(BaseScenario):
             # optimal 1:1 agent-landmark pairing (bipartite matching algorithm)
             self.delta_dists = self._bipartite_min_dists(dists) 
             world.dists = self.delta_dists
-
+    
             total_penalty = np.mean(np.clip(self.delta_dists, 0, 2))
-            self.joint_reward = -total_penalty
+            rew = -total_penalty
             
-        return self.joint_reward
+        return srew
     
     
     
