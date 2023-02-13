@@ -83,8 +83,16 @@ class Landmark(Entity):
 
 # properties of agent entities
 class Agent(Entity):
-    def __init__(self):
+    def __init__(self,iden =0):
+        # def __init__(self, orient='H', axis_pos=0.0, endpoints=(-1, 1), width=0.1,
+        #             hard=True):
+        #     # orientation: 'H'orizontal or 'V'ertical
+        #     self.orient = orient
+        #     # position along a
         super(Agent, self).__init__()
+        
+        ## agent id
+        self.id = iden
         # agent are adversary
         self.adversary = False
         # agent are dummy
