@@ -42,13 +42,13 @@ def find_angle(pose):
 
 class SatelliteScenario(BaseScenario):
     def __init__(self, num_agents=4, dist_threshold=0.1, arena_size=1):
-        self.arena_size = arena_size
         self.num_agents = num_agents
-        self.total_sep = 1.25*self.arena_size
-        self.ideal_sep = self.total_sep / (num_agents-1)
+        self.target_radius = 0.5 # fixing the target radius for now  
+        self.ideal_theta_separation = (2*np.pi)/self.num_agents # ideal theta difference between two agents 
+        self.arena_size = arena_size
         self.dist_thres = 0.05
-
-
+        self.theta_thres = 0.1
+        
 
     def make_world(self, args:argparse.Namespace) -> SatWorld:
         """
@@ -221,30 +221,14 @@ class SatelliteScenario(BaseScenario):
         ####### set random positions for entities ###########
         
         count=0
-        # set random static obstacles first
+        obs_position = np.random.uniform(-.5*self.arena_size, .5*self.arena_size, world.dim_p)
+        # There is only one obstalce in navigation_graph
         for obstacle in world.obstacles:
-            if count==0:
-                obstacle.state.p_pos = 0.8 * np.random.uniform(-self.world_size/2, 
-                                                        self.world_size/2, 
-                                                        world.dim_p)
+                obs_position = np.random.uniform(-.5*self.arena_size, .5*self.arena_size, world.dim_p)
+                obstacle.state.p_pos =obs_position
                 obstacle.state.p_vel = np.zeros(world.dim_p)
         
-                theta = np.random.uniform(0, 2*np.pi)
-                loc = obstacle.state.p_pos + self.total_sep*np.array([np.cos(theta), np.sin(theta)])
-                # find a suitable theta such that landmark 1 is within the bounds
-                while not(abs(loc[0])<self.arena_size and abs(loc[1])<self.arena_size):
-                    theta += np.radians(5)
-                    loc = obstacle.state.p_pos + self.total_sep*np.array([np.cos(theta), np.sin(theta)])
-                count+=1
-            else:
-
-                obstacle.state.p_pos = loc
-                obstacle.state.p_vel = np.zeros(world.dim_p)
-        
-        expected_pos_list = [world.obstacles[0].state.p_pos + i*self.ideal_sep*np.array([np.cos(theta), np.sin(theta)]) 
-                                   for i in range(len(world.agents))]
-
-
+         
         #####################################################
 
         # set agents at random positions not colliding with obstacles
@@ -261,8 +245,7 @@ class SatelliteScenario(BaseScenario):
             agent_size = world.agents[num_agents_added].size
             obs_collision = self.is_obstacle_collision(random_pos, agent_size, world)
             agent_collision = self.check_agent_collision(random_pos, agent_size, agents_added)
-            goal_collision =     self.arreq_in_list(random_pos, expected_pos_list)
-            if not obs_collision and not agent_collision and not goal_collision:
+            if not obs_collision and not agent_collision:
                 world.agents[num_agents_added].state.p_pos = random_pos
                 world.agents[num_agents_added].state.p_vel = (1/1000)*np.ones(world.dim_p)
                 world.agents[num_agents_added].state.c = np.zeros(world.dim_c)
@@ -271,8 +254,16 @@ class SatelliteScenario(BaseScenario):
                 #print('\nworld agents positon is '+ str(random_pos))
                 #print('world velocity is '+ str( (1/1000)*np.ones(world.dim_p) ))
         #####################################################
-        
-       
+
+        relative_poses = [agent.state.p_pos - obs_position for agent in world.agents]
+        thetas = get_thetas(relative_poses)
+        # anchor at the agent with min theta (closest to the horizontal line)
+        theta_min = min(thetas)
+        expected_poses = [obs_position + self.target_radius * np.array(
+                          [np.cos(theta_min + i*self.ideal_theta_separation), 
+                           np.sin(theta_min + i*self.ideal_theta_separation)])
+                          for i in range(self.num_agents)]
+   
         #####################################################
 
         # set landmarks (goals) at random positions not colliding with obstacles 
@@ -282,7 +273,7 @@ class SatelliteScenario(BaseScenario):
             if num_goals_added == self.num_agents:
                 break
             
-            world.landmarks[num_goals_added].state.p_pos = expected_pos_list[num_goals_added]
+            world.landmarks[num_goals_added].state.p_pos = expected_poses[num_goals_added]
             world.landmarks[num_goals_added].state.p_vel = np.zeros(world.dim_p)
             num_goals_added += 1
 
@@ -421,14 +412,7 @@ class SatelliteScenario(BaseScenario):
         agents_goal = world.get_entity(entity_type='landmark', id=agent.id)
         dist_to_goal = np.sqrt(np.sum(np.square(agent.state.p_pos - 
                                                 agents_goal.state.p_pos)))
-        # print('dist to goal \n\n'+str(dist_to_goal))
-        # print('type '+ str(type(dist_to_goal)))
-        
-        # delta_dists = self.bipartite_min_dists(dist_to_goal)
-        # self.delta_dist = delta_dists
-        
-        # total_penalty = np.mean(np.clip(delta_dists,0,2))
-        
+
         if dist_to_goal < self.min_dist_thresh:
             rew += self.goal_rew
         else:
