@@ -8,8 +8,8 @@ _wandb:
     framework: lightning
     is_jupyter_run: false
     is_kaggle_kernel: false
-    python_version: 3.8.13
-    start_time: 1668272046.0
+    python_version: 3.8.15
+    start_time: 1676394670.0
     t:
       1:
       - 1
@@ -27,7 +27,7 @@ _wandb:
       - 4
       - 13
       - 16
-      4: 3.8.13
+      4: 3.8.15
       5: 0.12.21
       8:
       - 5
@@ -48,7 +48,7 @@ collaborative:
   value: true
 collision_rew:
   desc: null
-  value: 5.0
+  value: 5
 critic_graph_aggr:
   desc: null
   value: global
@@ -96,7 +96,7 @@ eval_interval:
   value: 25
 experiment_name:
   desc: null
-  value: informarl_25
+  value: norm_informarl
 gae_lambda:
   desc: null
   value: 0.95
@@ -127,6 +127,12 @@ gnn_use_ReLU:
 goal_rew:
   desc: null
   value: 5
+goal_sharing:
+  desc: null
+  value: true
+goal_type:
+  desc: null
+  value: fixed
 graph_feat_type:
   desc: null
   value: relative
@@ -142,6 +148,9 @@ ifi:
 layer_N:
   desc: null
   value: 1
+local_obs:
+  desc: null
+  value: false
 log_interval:
   desc: null
   value: 5
@@ -186,25 +195,19 @@ num_embeddings:
   value: 3
 num_env_steps:
   desc: null
-  value: 200000
+  value: 3000000
 num_landmarks:
   desc: null
   value: 3
 num_mini_batch:
   desc: null
   value: 75
-num_nbd_entities:
-  desc: null
-  value: 3
 num_obstacles:
   desc: null
   value: 3
 num_scripted_agents:
   desc: null
   value: 0
-obs_type:
-  desc: null
-  value: global
 opti_eps:
   desc: null
   value: 1.0e-05
@@ -213,28 +216,28 @@ ppo_epoch:
   value: 10
 project_name:
   desc: null
-  value: Satellite_Relative_Plots
+  value: Satellite Minimum Information
 recurrent_N:
   desc: null
   value: 1
 render_episodes:
   desc: null
   value: 5
-render_eval:
-  desc: null
-  value: false
 save_gifs:
   desc: null
   value: false
 save_interval:
   desc: null
   value: 1
+save_location:
+  desc: null
+  value: false
 scenario_name:
   desc: null
   value: navigation_graph
 seed:
   desc: null
-  value: 1
+  value: 4
 share_policy:
   desc: null
   value: true
@@ -259,9 +262,6 @@ use_centralized_V:
 use_clipped_value_loss:
   desc: null
   value: true
-use_comm:
-  desc: null
-  value: false
 use_dones:
   desc: null
   value: false
@@ -321,7 +321,7 @@ use_wandb:
   value: true
 user_name:
   desc: null
-  value: marl
+  value: sydneyd
 value_loss_coef:
   desc: null
   value: 1
@@ -333,4 +333,7 @@ weight_decay:
   value: 0
 world_size:
   desc: null
-  value: 2
+  value: 2.0
+world_type:
+  desc: null
+  value: ground
