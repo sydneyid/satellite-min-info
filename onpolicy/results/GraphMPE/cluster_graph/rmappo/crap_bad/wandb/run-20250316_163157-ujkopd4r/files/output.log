@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "onpolicy/scripts/train_mpe.py", line 238, in <module>
+    main(sys.argv[1:])
+  File "onpolicy/scripts/train_mpe.py", line 188, in main
+    envs = make_train_env(all_args)
+  File "onpolicy/scripts/train_mpe.py", line 42, in make_train_env
+    range(all_args.n_rollout_threads)])
+  File "/Users/sydneydolan/Documents/satellite-min-info/onpolicy/envs/env_wrappers.py", line 966, in __init__
+    agent_id_observation_space, share_agent_id_observation_space = self.remotes[0].recv()
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/multiprocessing/connection.py", line 407, in _recv_bytes
+    buf = self._recv(4)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError

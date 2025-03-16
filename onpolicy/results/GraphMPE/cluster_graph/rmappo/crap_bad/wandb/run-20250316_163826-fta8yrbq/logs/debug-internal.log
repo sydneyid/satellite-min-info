@@ -1,0 +1,232 @@
+2025-03-16 16:38:26,984 INFO    StreamThr :55483 [internal.py:wandb_internal():89] W&B internal server running at pid: 55483, started at: 2025-03-16 16:38:26.984002
+2025-03-16 16:38:26,986 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: status
+2025-03-16 16:38:26,990 INFO    WriterThread:55483 [datastore.py:open_for_write():85] open: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/run-fta8yrbq.wandb
+2025-03-16 16:38:26,990 DEBUG   SenderThread:55483 [sender.py:send():380] send: header
+2025-03-16 16:38:27,028 DEBUG   SenderThread:55483 [sender.py:send():380] send: run
+2025-03-16 16:38:27,611 INFO    SenderThread:55483 [dir_watcher.py:__init__():211] watching files in: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files
+2025-03-16 16:38:27,611 INFO    SenderThread:55483 [sender.py:_start_run_threads():1125] run started: fta8yrbq with start time 1742157506.982917
+2025-03-16 16:38:27,630 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: check_version
+2025-03-16 16:38:27,630 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: check_version
+2025-03-16 16:38:27,758 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: run_start
+2025-03-16 16:38:27,759 DEBUG   HandlerThread:55483 [system_info.py:__init__():32] System info init
+2025-03-16 16:38:27,759 DEBUG   HandlerThread:55483 [system_info.py:__init__():47] System info init done
+2025-03-16 16:38:27,759 INFO    HandlerThread:55483 [system_monitor.py:start():181] Starting system monitor
+2025-03-16 16:38:27,759 INFO    SystemMonitor:55483 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2025-03-16 16:38:27,759 INFO    HandlerThread:55483 [system_monitor.py:probe():201] Collecting system info
+2025-03-16 16:38:27,760 DEBUG   HandlerThread:55483 [system_info.py:probe():196] Probing system
+2025-03-16 16:38:27,760 INFO    SystemMonitor:55483 [interfaces.py:start():190] Started cpu monitoring
+2025-03-16 16:38:27,761 INFO    SystemMonitor:55483 [interfaces.py:start():190] Started disk monitoring
+2025-03-16 16:38:27,763 INFO    SystemMonitor:55483 [interfaces.py:start():190] Started memory monitoring
+2025-03-16 16:38:27,763 INFO    SystemMonitor:55483 [interfaces.py:start():190] Started network monitoring
+2025-03-16 16:38:27,764 DEBUG   HandlerThread:55483 [system_info.py:_probe_git():181] Probing git
+2025-03-16 16:38:27,818 DEBUG   HandlerThread:55483 [system_info.py:_probe_git():189] Probing git done
+2025-03-16 16:38:27,818 DEBUG   HandlerThread:55483 [system_info.py:probe():244] Probing system done
+2025-03-16 16:38:27,818 DEBUG   HandlerThread:55483 [system_monitor.py:probe():210] {'os': 'Darwin-23.4.0-x86_64-i386-64bit', 'python': '3.6.3', 'heartbeatAt': '2025-03-16T20:38:27.760506', 'startedAt': '2025-03-16T20:38:26.931899', 'docker': None, 'cuda': None, 'args': ('--use_valuenorm', '--use_popart', '--project_name', 'crap_bad', '--env_name', 'GraphMPE', '--algorithm_name', 'rmappo', '--seed', '0', '--experiment_name', 'crap_bad', '--scenario_name', 'cluster_graph', '--num_agents=4', '--n_training_threads', '1', '--n_rollout_threads', '2', '--num_mini_batch', '1', '--episode_length', '25', '--num_env_steps', '100', '--user_name', 'marl', '--num_landmarks=4', '--num_obstacles=0'), 'state': 'running', 'program': 'onpolicy/scripts/train_mpe.py', 'codePathLocal': 'onpolicy/scripts/train_mpe.py', 'codePath': 'onpolicy/scripts/train_mpe.py', 'git': {'remote': 'https://github.com/sydneyid/satellite-min-info.git', 'commit': 'c8ee01a38e5546581c1f093b1dacc699926ecd40'}, 'email': '54903073+sydneyid@users.noreply.github.com', 'root': '/Users/sydneydolan/Documents/satellite-min-info', 'host': 'Sydneys-MacBook-Pro.fritz.box', 'username': 'sydneydolan', 'executable': '/opt/anaconda3/envs/gcs/bin/python', 'cpu_count': 10, 'cpu_count_logical': 10, 'cpu_freq': {'current': 2400, 'min': 2400, 'max': 2400}, 'cpu_freq_per_core': [{'current': 2400, 'min': 2400, 'max': 2400}], 'disk': {'/': {'total': 926.3517189025879, 'used': 12.594894409179688}}, 'memory': {'total': 32.0}}
+2025-03-16 16:38:27,818 INFO    HandlerThread:55483 [system_monitor.py:probe():211] Finished collecting system info
+2025-03-16 16:38:27,818 INFO    HandlerThread:55483 [system_monitor.py:probe():214] Publishing system info
+2025-03-16 16:38:27,818 DEBUG   HandlerThread:55483 [system_info.py:_save_pip():53] Saving list of pip packages installed into the current environment
+2025-03-16 16:38:27,819 DEBUG   HandlerThread:55483 [system_info.py:_save_pip():68] Saving pip packages done
+2025-03-16 16:38:27,819 DEBUG   HandlerThread:55483 [system_info.py:_save_conda():76] Saving list of conda packages installed into the current environment
+2025-03-16 16:38:28,618 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/conda-environment.yaml
+2025-03-16 16:38:28,619 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/requirements.txt
+2025-03-16 16:38:29,495 DEBUG   HandlerThread:55483 [system_info.py:_save_conda():87] Saving conda packages done
+2025-03-16 16:38:29,495 INFO    HandlerThread:55483 [system_monitor.py:probe():216] Finished publishing system info
+2025-03-16 16:38:29,497 DEBUG   SenderThread:55483 [sender.py:send():380] send: files
+2025-03-16 16:38:29,497 INFO    SenderThread:55483 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2025-03-16 16:38:29,502 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: stop_status
+2025-03-16 16:38:29,503 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: internal_messages
+2025-03-16 16:38:29,503 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: stop_status
+2025-03-16 16:38:29,621 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/conda-environment.yaml
+2025-03-16 16:38:29,621 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/wandb-metadata.json
+2025-03-16 16:38:29,914 DEBUG   SenderThread:55483 [sender.py:send():380] send: telemetry
+2025-03-16 16:38:30,000 DEBUG   SenderThread:55483 [sender.py:send():380] send: telemetry
+2025-03-16 16:38:30,488 INFO    wandb-upload_0:55483 [upload_job.py:push():131] Uploaded file /var/folders/c5/hqfxqmxs5n363p26ygxlwn_80000gn/T/tmp0fq9iylswandb/kya19f0c-wandb-metadata.json
+2025-03-16 16:38:30,627 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/output.log
+2025-03-16 16:38:32,044 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:32,044 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: status_report
+2025-03-16 16:38:32,044 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:32,044 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:32,637 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/output.log
+2025-03-16 16:38:32,638 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/critic.pt
+2025-03-16 16:38:32,639 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/actor.pt
+2025-03-16 16:38:34,644 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/output.log
+2025-03-16 16:38:37,064 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: status_report
+2025-03-16 16:38:42,089 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: status_report
+2025-03-16 16:38:42,393 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,393 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,394 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,394 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,394 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,394 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,394 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,395 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,395 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,395 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,395 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,395 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,396 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,396 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,396 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,396 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,396 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,397 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,397 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,397 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,397 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,397 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,397 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,398 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,398 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,398 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,398 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:42,398 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: partial_history
+2025-03-16 16:38:44,009 DEBUG   SenderThread:55483 [sender.py:send():380] send: telemetry
+2025-03-16 16:38:44,009 DEBUG   SenderThread:55483 [sender.py:send():380] send: exit
+2025-03-16 16:38:44,010 INFO    SenderThread:55483 [sender.py:send_exit():585] handling exit code: 0
+2025-03-16 16:38:44,010 INFO    SenderThread:55483 [sender.py:send_exit():587] handling runtime: 16
+2025-03-16 16:38:44,011 INFO    SenderThread:55483 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2025-03-16 16:38:44,011 INFO    SenderThread:55483 [sender.py:send_exit():593] send defer
+2025-03-16 16:38:44,011 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:44,011 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 0
+2025-03-16 16:38:44,011 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:44,011 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 0
+2025-03-16 16:38:44,011 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 1
+2025-03-16 16:38:44,011 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:44,011 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 1
+2025-03-16 16:38:44,012 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:44,012 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 1
+2025-03-16 16:38:44,012 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 2
+2025-03-16 16:38:44,012 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:44,012 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 2
+2025-03-16 16:38:44,012 INFO    HandlerThread:55483 [system_monitor.py:finish():190] Stopping system monitor
+2025-03-16 16:38:44,012 DEBUG   SystemMonitor:55483 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2025-03-16 16:38:44,012 INFO    HandlerThread:55483 [interfaces.py:finish():202] Joined cpu monitor
+2025-03-16 16:38:44,013 DEBUG   SystemMonitor:55483 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2025-03-16 16:38:44,013 INFO    HandlerThread:55483 [interfaces.py:finish():202] Joined disk monitor
+2025-03-16 16:38:44,013 DEBUG   SystemMonitor:55483 [system_monitor.py:_start():170] Publishing last batch of metrics
+2025-03-16 16:38:44,013 INFO    HandlerThread:55483 [interfaces.py:finish():202] Joined memory monitor
+2025-03-16 16:38:44,014 INFO    HandlerThread:55483 [interfaces.py:finish():202] Joined network monitor
+2025-03-16 16:38:44,014 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:44,014 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 2
+2025-03-16 16:38:44,014 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 3
+2025-03-16 16:38:44,014 DEBUG   SenderThread:55483 [sender.py:send():380] send: stats
+2025-03-16 16:38:44,014 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:44,014 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 3
+2025-03-16 16:38:44,018 DEBUG   SenderThread:55483 [sender.py:send():380] send: history
+2025-03-16 16:38:44,018 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: summary_record
+2025-03-16 16:38:44,018 INFO    SenderThread:55483 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2025-03-16 16:38:44,018 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:44,018 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 3
+2025-03-16 16:38:44,019 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 4
+2025-03-16 16:38:44,019 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:44,019 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 4
+2025-03-16 16:38:44,019 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:44,019 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 4
+2025-03-16 16:38:44,019 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 5
+2025-03-16 16:38:44,019 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:44,019 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 5
+2025-03-16 16:38:44,020 DEBUG   SenderThread:55483 [sender.py:send():380] send: summary
+2025-03-16 16:38:44,020 INFO    SenderThread:55483 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2025-03-16 16:38:44,020 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:44,020 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 5
+2025-03-16 16:38:44,020 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 6
+2025-03-16 16:38:44,020 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:44,020 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 6
+2025-03-16 16:38:44,020 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:44,020 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 6
+2025-03-16 16:38:44,023 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: status_report
+2025-03-16 16:38:44,429 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 7
+2025-03-16 16:38:44,429 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:44,429 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 7
+2025-03-16 16:38:44,430 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:44,430 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 7
+2025-03-16 16:38:44,693 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/config.yaml
+2025-03-16 16:38:44,694 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/critic.pt
+2025-03-16 16:38:44,694 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/output.log
+2025-03-16 16:38:44,695 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/actor.pt
+2025-03-16 16:38:44,695 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/wandb-summary.json
+2025-03-16 16:38:45,016 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: poll_exit
+2025-03-16 16:38:48,230 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 8
+2025-03-16 16:38:48,231 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: poll_exit
+2025-03-16 16:38:48,231 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:48,232 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 8
+2025-03-16 16:38:48,233 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:48,233 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 8
+2025-03-16 16:38:48,233 INFO    SenderThread:55483 [job_builder.py:build():281] Attempting to build job artifact
+2025-03-16 16:38:48,235 INFO    SenderThread:55483 [job_builder.py:_get_source_type():393] is repo sourced job
+2025-03-16 16:38:48,239 INFO    SenderThread:55483 [job_builder.py:build():369] adding wandb-job metadata file
+2025-03-16 16:38:48,244 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 9
+2025-03-16 16:38:48,245 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:48,245 DEBUG   SenderThread:55483 [sender.py:send():380] send: artifact
+2025-03-16 16:38:48,245 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 9
+2025-03-16 16:38:48,711 INFO    Thread-12 :55483 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/output.log
+2025-03-16 16:38:49,423 INFO    wandb-upload_1:55483 [upload_job.py:push():86] Skipped uploading /Users/sydneydolan/Library/Application Support/wandb/artifacts/staging/tmpv2dx3xqs
+2025-03-16 16:38:49,779 INFO    wandb-upload_0:55483 [upload_job.py:push():89] Uploaded file /Users/sydneydolan/Library/Application Support/wandb/artifacts/staging/tmppuou2oas
+2025-03-16 16:38:50,039 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: keepalive
+2025-03-16 16:38:51,029 INFO    SenderThread:55483 [sender.py:send_artifact():1456] sent artifact job-https___github.com_sydneyid_satellite-min-info.git_onpolicy_scripts_train_mpe.py - {'id': 'QXJ0aWZhY3Q6MTU3NDQ5Mjc1Mw==', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjU4Mjg1MTIxOQ==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MTU3NDQzOTAyOA==', 'versionIndex': 1}}}
+2025-03-16 16:38:51,030 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:51,031 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 9
+2025-03-16 16:38:51,031 INFO    SenderThread:55483 [dir_watcher.py:finish():358] shutting down directory watcher
+2025-03-16 16:38:51,725 INFO    SenderThread:55483 [dir_watcher.py:finish():388] scan: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files
+2025-03-16 16:38:51,725 INFO    SenderThread:55483 [dir_watcher.py:finish():402] scan save: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/requirements.txt requirements.txt
+2025-03-16 16:38:51,725 INFO    SenderThread:55483 [dir_watcher.py:finish():402] scan save: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/actor.pt actor.pt
+2025-03-16 16:38:51,726 INFO    SenderThread:55483 [dir_watcher.py:finish():402] scan save: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/critic.pt critic.pt
+2025-03-16 16:38:51,728 INFO    SenderThread:55483 [dir_watcher.py:finish():402] scan save: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/output.log output.log
+2025-03-16 16:38:51,733 INFO    SenderThread:55483 [dir_watcher.py:finish():402] scan save: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/config.yaml config.yaml
+2025-03-16 16:38:51,735 INFO    SenderThread:55483 [dir_watcher.py:finish():402] scan save: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/wandb-summary.json wandb-summary.json
+2025-03-16 16:38:51,737 INFO    SenderThread:55483 [dir_watcher.py:finish():402] scan save: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/conda-environment.yaml conda-environment.yaml
+2025-03-16 16:38:51,738 INFO    SenderThread:55483 [dir_watcher.py:finish():402] scan save: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/wandb-metadata.json wandb-metadata.json
+2025-03-16 16:38:51,739 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 10
+2025-03-16 16:38:51,741 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:51,742 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 10
+2025-03-16 16:38:51,745 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:51,746 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 10
+2025-03-16 16:38:51,746 INFO    SenderThread:55483 [file_pusher.py:finish():175] shutting down file pusher
+2025-03-16 16:38:52,136 INFO    wandb-upload_2:55483 [upload_job.py:push():131] Uploaded file /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/requirements.txt
+2025-03-16 16:38:52,408 INFO    wandb-upload_3:55483 [upload_job.py:push():131] Uploaded file /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/output.log
+2025-03-16 16:38:52,453 INFO    wandb-upload_6:55483 [upload_job.py:push():131] Uploaded file /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/conda-environment.yaml
+2025-03-16 16:38:52,459 INFO    wandb-upload_8:55483 [upload_job.py:push():131] Uploaded file /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/wandb-summary.json
+2025-03-16 16:38:52,493 INFO    wandb-upload_7:55483 [upload_job.py:push():131] Uploaded file /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/config.yaml
+2025-03-16 16:38:52,678 INFO    wandb-upload_1:55483 [upload_job.py:push():131] Uploaded file /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/actor.pt
+2025-03-16 16:38:52,992 INFO    wandb-upload_5:55483 [upload_job.py:push():131] Uploaded file /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/files/critic.pt
+2025-03-16 16:38:53,194 INFO    Thread-11 :55483 [sender.py:transition_state():613] send defer: 11
+2025-03-16 16:38:53,196 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:53,196 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 11
+2025-03-16 16:38:53,198 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:53,198 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 11
+2025-03-16 16:38:53,198 INFO    SenderThread:55483 [file_pusher.py:join():181] waiting for file pusher
+2025-03-16 16:38:53,198 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 12
+2025-03-16 16:38:53,199 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:53,199 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 12
+2025-03-16 16:38:53,200 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:53,200 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 12
+2025-03-16 16:38:53,200 INFO    SenderThread:55483 [file_stream.py:finish():595] file stream finish called
+2025-03-16 16:38:53,397 INFO    SenderThread:55483 [file_stream.py:finish():599] file stream finish is done
+2025-03-16 16:38:53,397 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 13
+2025-03-16 16:38:53,398 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:53,398 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 13
+2025-03-16 16:38:53,398 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: status_report
+2025-03-16 16:38:53,399 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:53,399 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 13
+2025-03-16 16:38:53,399 INFO    SenderThread:55483 [sender.py:transition_state():613] send defer: 14
+2025-03-16 16:38:53,399 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: defer
+2025-03-16 16:38:53,399 INFO    HandlerThread:55483 [handler.py:handle_request_defer():170] handle defer: 14
+2025-03-16 16:38:53,400 DEBUG   SenderThread:55483 [sender.py:send():380] send: final
+2025-03-16 16:38:53,400 DEBUG   SenderThread:55483 [sender.py:send():380] send: footer
+2025-03-16 16:38:53,401 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: defer
+2025-03-16 16:38:53,401 INFO    SenderThread:55483 [sender.py:send_request_defer():609] handle sender defer: 14
+2025-03-16 16:38:53,403 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: internal_messages
+2025-03-16 16:38:53,405 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: poll_exit
+2025-03-16 16:38:53,406 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: server_info
+2025-03-16 16:38:53,406 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: poll_exit
+2025-03-16 16:38:53,406 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: server_info
+2025-03-16 16:38:53,410 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: get_summary
+2025-03-16 16:38:53,411 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: sampled_history
+2025-03-16 16:38:53,413 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: job_info
+2025-03-16 16:38:53,569 DEBUG   SenderThread:55483 [sender.py:send_request():407] send_request: job_info
+2025-03-16 16:38:53,571 DEBUG   HandlerThread:55483 [handler.py:handle_request():144] handle_request: shutdown
+2025-03-16 16:38:53,571 INFO    HandlerThread:55483 [handler.py:finish():844] shutting down handler
+2025-03-16 16:38:54,419 INFO    WriterThread:55483 [datastore.py:close():294] close: /Users/sydneydolan/Documents/satellite-min-info/onpolicy/results/GraphMPE/cluster_graph/rmappo/crap_bad/wandb/run-20250316_163826-fta8yrbq/run-fta8yrbq.wandb
+2025-03-16 16:38:54,573 INFO    SenderThread:55483 [sender.py:finish():1534] shutting down sender
+2025-03-16 16:38:54,574 INFO    SenderThread:55483 [file_pusher.py:finish():175] shutting down file pusher
+2025-03-16 16:38:54,574 INFO    SenderThread:55483 [file_pusher.py:join():181] waiting for file pusher

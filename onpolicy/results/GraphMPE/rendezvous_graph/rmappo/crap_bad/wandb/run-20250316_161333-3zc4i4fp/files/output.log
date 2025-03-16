@@ -1,0 +1,142 @@
+Overriding Observation dimension
+Overriding Observation dimension
+________________________________________________________________________________
+Actor Network
+________________________________________________________________________________
+________________________________________________________________________________
+GR_Actor(
+  (gnn_base): GNNBase(
+    (gnn): TransformerConvNet(
+      (active_func): ReLU()
+      (embed_layer): EmbedConv()
+      (gnn1): TransformerConv(16, 16, heads=3)
+      (gnn2): ModuleList(
+        (0): TransformerConv(16, 16, heads=3)
+        (1): TransformerConv(16, 16, heads=3)
+      )
+    )
+  )
+  (base): MLPBase(
+    (feature_norm): LayerNorm((22,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLPLayer(
+      (fc1): Sequential(
+        (0): Linear(in_features=22, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc_h): Sequential(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc2): ModuleList(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=64, bias=True)
+          (1): ReLU()
+          (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+  )
+  (rnn): RNNLayer(
+    (rnn): GRU(64, 64)
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (act): ACTLayer(
+    (action_out): Categorical(
+      (linear): Linear(in_features=64, out_features=5, bias=True)
+    )
+  )
+)
+________________________________________________________________________________
+________________________________________________________________________________
+Critic Network
+________________________________________________________________________________
+________________________________________________________________________________
+GR_Critic(
+  (gnn_base): GNNBase(
+    (gnn): TransformerConvNet(
+      (active_func): ReLU()
+      (embed_layer): EmbedConv()
+      (gnn1): TransformerConv(16, 16, heads=3)
+      (gnn2): ModuleList(
+        (0): TransformerConv(16, 16, heads=3)
+        (1): TransformerConv(16, 16, heads=3)
+      )
+    )
+  )
+  (base): MLPBase(
+    (feature_norm): LayerNorm((40,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLPLayer(
+      (fc1): Sequential(
+        (0): Linear(in_features=40, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc_h): Sequential(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc2): ModuleList(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=64, bias=True)
+          (1): ReLU()
+          (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+  )
+  (rnn): RNNLayer(
+    (rnn): GRU(64, 64)
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (v_out): PopArt()
+)
+________________________________________________________________________________
+/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/torch_geometric/deprecation.py:13: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+Average episode rewards is -148.972 	Total timesteps: 50 	 Percentage complete 50.000
+Traceback (most recent call last):
+  File "onpolicy/scripts/train_mpe.py", line 238, in <module>
+    main(sys.argv[1:])
+  File "onpolicy/scripts/train_mpe.py", line 223, in main
+    runner.run()
+  File "/Users/sydneydolan/Documents/satellite-min-info/onpolicy/runner/shared/graph_mpe_runner.py", line 71, in run
+    self.log_train(train_infos, total_num_steps)
+  File "/Users/sydneydolan/Documents/satellite-min-info/onpolicy/runner/shared/base_runner.py", line 245, in log_train
+    wandb.log({k: v}, step=total_num_steps)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/wandb_run.py", line 419, in wrapper
+    return func(self, *args, **kwargs)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/wandb_run.py", line 370, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/wandb_run.py", line 360, in wrapper
+    return func(self, *args, **kwargs)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/wandb_run.py", line 1792, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/wandb_run.py", line 1567, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/wandb_run.py", line 1444, in _partial_history_callback
+    publish_step=not_using_tensorboard,
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/interface/interface.py", line 528, in publish_partial_history
+    data = history_dict_to_json(run, data, step=user_step, ignore_copy_err=True)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/data_types/utils.py", line 53, in history_dict_to_json
+    run, key, val, namespace=step, ignore_copy_err=ignore_copy_err
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/sdk/data_types/utils.py", line 82, in val_to_json
+    if util.is_pandas_data_frame(val):
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/wandb/util.py", line 449, in is_pandas_data_frame
+    import pandas as pd
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/pandas/__init__.py", line 30, in <module>
+    from pandas._libs import hashtable as _hashtable, lib as _lib, tslib as _tslib
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/pandas/_libs/__init__.py", line 13, in <module>
+    from pandas._libs.interval import Interval
+  File "pandas/_libs/interval.pyx", line 1, in init pandas._libs.interval
+  File "pandas/_libs/hashtable.pyx", line 1, in init pandas._libs.hashtable
+  File "pandas/_libs/missing.pyx", line 1, in init pandas._libs.missing
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/pandas/_libs/tslibs/__init__.py", line 30, in <module>
+    from .conversion import OutOfBoundsTimedelta, localize_pydatetime
+  File "pandas/_libs/tslibs/conversion.pyx", line 58, in init pandas._libs.tslibs.conversion
+  File "pandas/_libs/tslibs/parsing.pyx", line 1, in init pandas._libs.tslibs.parsing
+  File "pandas/_libs/tslibs/offsets.pyx", line 1, in init pandas._libs.tslibs.offsets
+  File "<frozen importlib._bootstrap>", line 416, in parent
+KeyboardInterrupt

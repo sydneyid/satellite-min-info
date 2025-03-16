@@ -58,8 +58,11 @@ class SatelliteScenario(BaseScenario):
         self.min_dist_thresh = args.min_dist_thresh
         self.use_dones = args.use_dones
         self.episode_length = args.episode_length
+        self.perturbed =args.perturbed
         ####################
         world = SatWorld()
+        if self.perturbed: ## if perturbed dynamics: 
+            world.perturbed= True
         world.world_length = args.episode_length
         # metrics to keep track of
         world.current_time_step = 0

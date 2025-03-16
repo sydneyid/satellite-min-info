@@ -1,0 +1,101 @@
+Overriding Observation dimension
+Overriding Observation dimension
+________________________________________________________________________________
+Actor Network
+________________________________________________________________________________
+________________________________________________________________________________
+GR_Actor(
+  (gnn_base): GNNBase(
+    (gnn): TransformerConvNet(
+      (active_func): ReLU()
+      (embed_layer): EmbedConv()
+      (gnn1): TransformerConv(16, 16, heads=3)
+      (gnn2): ModuleList(
+        (0): TransformerConv(16, 16, heads=3)
+        (1): TransformerConv(16, 16, heads=3)
+      )
+    )
+  )
+  (base): MLPBase(
+    (feature_norm): LayerNorm((22,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLPLayer(
+      (fc1): Sequential(
+        (0): Linear(in_features=22, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc_h): Sequential(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc2): ModuleList(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=64, bias=True)
+          (1): ReLU()
+          (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+  )
+  (rnn): RNNLayer(
+    (rnn): GRU(64, 64)
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (act): ACTLayer(
+    (action_out): Categorical(
+      (linear): Linear(in_features=64, out_features=5, bias=True)
+    )
+  )
+)
+________________________________________________________________________________
+________________________________________________________________________________
+Critic Network
+________________________________________________________________________________
+________________________________________________________________________________
+GR_Critic(
+  (gnn_base): GNNBase(
+    (gnn): TransformerConvNet(
+      (active_func): ReLU()
+      (embed_layer): EmbedConv()
+      (gnn1): TransformerConv(16, 16, heads=3)
+      (gnn2): ModuleList(
+        (0): TransformerConv(16, 16, heads=3)
+        (1): TransformerConv(16, 16, heads=3)
+      )
+    )
+  )
+  (base): MLPBase(
+    (feature_norm): LayerNorm((40,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLPLayer(
+      (fc1): Sequential(
+        (0): Linear(in_features=40, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc_h): Sequential(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc2): ModuleList(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=64, bias=True)
+          (1): ReLU()
+          (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+  )
+  (rnn): RNNLayer(
+    (rnn): GRU(64, 64)
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (v_out): PopArt()
+)
+________________________________________________________________________________
+/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/torch_geometric/deprecation.py:13: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+Average episode rewards is -92.787 	Total timesteps: 50 	 Percentage complete 50.000
+/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/torch_geometric/deprecation.py:13: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)

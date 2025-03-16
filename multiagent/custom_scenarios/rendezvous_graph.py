@@ -108,6 +108,7 @@ class SatelliteScenario(BaseScenario):
         self.episode_length = args.episode_length
         self.goal_type = args.goal_type
         self.goal_sharing = args.goal_sharing
+        self.perturbed =args.perturbed
         
         
         if not hasattr(args, 'max_edge_dist'):
@@ -121,6 +122,9 @@ class SatelliteScenario(BaseScenario):
         
 
         world = SatWorld()
+        if self.perturbed: ## if perturbed dynamics: 
+            world.perturbed= True
+            
         world.cache_dists = True # cache distance between all entities
         world.graph_mode = True
         world.graph_feat_type = args.graph_feat_type

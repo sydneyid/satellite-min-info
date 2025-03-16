@@ -1,0 +1,118 @@
+Overriding Observation dimension
+Overriding Observation dimension
+________________________________________________________________________________
+Actor Network
+________________________________________________________________________________
+________________________________________________________________________________
+GR_Actor(
+  (gnn_base): GNNBase(
+    (gnn): TransformerConvNet(
+      (active_func): ReLU()
+      (embed_layer): EmbedConv()
+      (gnn1): TransformerConv(16, 16, heads=3)
+      (gnn2): ModuleList(
+        (0): TransformerConv(16, 16, heads=3)
+        (1): TransformerConv(16, 16, heads=3)
+      )
+    )
+  )
+  (base): MLPBase(
+    (feature_norm): LayerNorm((22,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLPLayer(
+      (fc1): Sequential(
+        (0): Linear(in_features=22, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc_h): Sequential(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc2): ModuleList(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=64, bias=True)
+          (1): ReLU()
+          (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+  )
+  (rnn): RNNLayer(
+    (rnn): GRU(64, 64)
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (act): ACTLayer(
+    (action_out): Categorical(
+      (linear): Linear(in_features=64, out_features=5, bias=True)
+    )
+  )
+)
+________________________________________________________________________________
+________________________________________________________________________________
+Critic Network
+________________________________________________________________________________
+________________________________________________________________________________
+GR_Critic(
+  (gnn_base): GNNBase(
+    (gnn): TransformerConvNet(
+      (active_func): ReLU()
+      (embed_layer): EmbedConv()
+      (gnn1): TransformerConv(16, 16, heads=3)
+      (gnn2): ModuleList(
+        (0): TransformerConv(16, 16, heads=3)
+        (1): TransformerConv(16, 16, heads=3)
+      )
+    )
+  )
+  (base): MLPBase(
+    (feature_norm): LayerNorm((40,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLPLayer(
+      (fc1): Sequential(
+        (0): Linear(in_features=40, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc_h): Sequential(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): ReLU()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc2): ModuleList(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=64, bias=True)
+          (1): ReLU()
+          (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+  )
+  (rnn): RNNLayer(
+    (rnn): GRU(64, 64)
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (v_out): PopArt()
+)
+________________________________________________________________________________
+/opt/anaconda3/envs/gcs/lib/python3.6/site-packages/torch_geometric/deprecation.py:13: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+Traceback (most recent call last):
+  File "onpolicy/scripts/train_mpe.py", line 238, in <module>
+    main(sys.argv[1:])
+  File "onpolicy/scripts/train_mpe.py", line 223, in main
+    runner.run()
+  File "/Users/sydneydolan/Documents/satellite-min-info/onpolicy/runner/shared/graph_mpe_runner.py", line 40, in run
+    dones, infos = self.envs.step(actions_env)
+  File "/Users/sydneydolan/Documents/satellite-min-info/onpolicy/envs/env_wrappers.py", line 109, in step
+    return self.step_wait()
+  File "/Users/sydneydolan/Documents/satellite-min-info/onpolicy/envs/env_wrappers.py", line 981, in step_wait
+    results = [remote.recv() for remote in self.remotes]
+  File "/Users/sydneydolan/Documents/satellite-min-info/onpolicy/envs/env_wrappers.py", line 981, in <listcomp>
+    results = [remote.recv() for remote in self.remotes]
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/multiprocessing/connection.py", line 250, in recv
+    buf = self._recv_bytes()
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/multiprocessing/connection.py", line 407, in _recv_bytes
+    buf = self._recv(4)
+  File "/opt/anaconda3/envs/gcs/lib/python3.6/multiprocessing/connection.py", line 383, in _recv
+    raise EOFError
+EOFError

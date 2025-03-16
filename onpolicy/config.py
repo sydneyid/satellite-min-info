@@ -183,6 +183,8 @@ def get_config():
     parser.add_argument("--cuda", action='store_false', default=True, 
                         help="by default True, will use GPU to train; "
                         "or else will use CPU;")
+    parser.add_argument("--perturbed", action='store_false',
+                        default=False, help='Whether the dynamics are perturbed')
     parser.add_argument("--cuda_deterministic", action='store_false', default=True, 
                         help="by default, make sure random seed effective. "
                         "if set, bypass such function.")

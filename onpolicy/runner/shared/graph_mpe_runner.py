@@ -384,7 +384,7 @@ class GMPERunner(Runner):
             if f==True:
                 true_count+=1
         print('success rate '+str(true_count))
-        print('frac episode '+str(sum(frac_episode_arr)/100))
+        print('frac episode '+str(sum(frac_episode_arr)/len(frac_episode_arr)))
         print('num_col: '+ str(sum(num_collisions_arr)/len(num_collisions_arr)/self.num_agents))
 
 

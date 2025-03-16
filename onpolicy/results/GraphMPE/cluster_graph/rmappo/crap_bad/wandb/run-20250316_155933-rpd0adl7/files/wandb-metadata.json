@@ -1,0 +1,73 @@
+{
+    "os": "Darwin-23.4.0-x86_64-i386-64bit",
+    "python": "3.6.3",
+    "heartbeatAt": "2025-03-16T19:59:34.556427",
+    "startedAt": "2025-03-16T19:59:33.647364",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--use_valuenorm",
+        "--use_popart",
+        "--project_name",
+        "crap_bad",
+        "--env_name",
+        "GraphMPE",
+        "--algorithm_name",
+        "rmappo",
+        "--seed",
+        "0",
+        "--experiment_name",
+        "crap_bad",
+        "--scenario_name",
+        "cluster_graph",
+        "--num_agents=4",
+        "--n_training_threads",
+        "1",
+        "--n_rollout_threads",
+        "2",
+        "--num_mini_batch",
+        "1",
+        "--episode_length",
+        "25",
+        "--num_env_steps",
+        "100",
+        "--user_name",
+        "marl"
+    ],
+    "state": "running",
+    "program": "onpolicy/scripts/train_mpe.py",
+    "codePathLocal": "onpolicy/scripts/train_mpe.py",
+    "codePath": "onpolicy/scripts/train_mpe.py",
+    "git": {
+        "remote": "https://github.com/sydneyid/satellite-min-info.git",
+        "commit": "c8ee01a38e5546581c1f093b1dacc699926ecd40"
+    },
+    "email": "54903073+sydneyid@users.noreply.github.com",
+    "root": "/Users/sydneydolan/Documents/satellite-min-info",
+    "host": "Sydneys-MacBook-Pro.fritz.box",
+    "username": "sydneydolan",
+    "executable": "/opt/anaconda3/envs/gcs/bin/python",
+    "cpu_count": 10,
+    "cpu_count_logical": 10,
+    "cpu_freq": {
+        "current": 2400,
+        "min": 2400,
+        "max": 2400
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2400,
+            "min": 2400,
+            "max": 2400
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 926.3517189025879,
+            "used": 12.594894409179688
+        }
+    },
+    "memory": {
+        "total": 32.0
+    }
+}
