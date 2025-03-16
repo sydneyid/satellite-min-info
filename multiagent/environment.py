@@ -574,7 +574,8 @@ class SatelliteMultiAgentGraphEnv(SatelliteMultiAgentBaseEnv):
         return collision
 
     def step(self, action_n:List) -> Tuple[List, List, List, List, List, List, List]:
-        #print('\n\n\nentered environment step ' + str(action_n))
+
+
         if self.update_graph is not None:
             self.update_graph(self.world)
         self.current_step += 1
@@ -584,9 +585,8 @@ class SatelliteMultiAgentGraphEnv(SatelliteMultiAgentBaseEnv):
         self.agents = self.world.policy_agents
         # set action for each agent
         for i, agent in enumerate(self.agents):
-            #print('i is ' + str(i) + 'bro what the f is the action_space ' + str(action_n[i]))
             self._set_action(action_n[i], agent, self.action_space[i])
-# if args.algorithm_name in ['mappo', 'rmappo']:
+
         if self.goal_type in ['bounded','random']:
             if self.world.current_time_step== int(round(self.world.world_length/2,0)):
                 num_goals_added = 0
@@ -617,7 +617,9 @@ class SatelliteMultiAgentGraphEnv(SatelliteMultiAgentBaseEnv):
                         self.world.landmarks[num_goals_added].state.p_vel = np.zeros(self.world.dim_p)
                         num_goals_added += 1
                 
-
+        # set action for each agent
+        for i, agent in enumerate(self.agents):
+            self._set_action(action_n[i], agent, self.action_space[i])
         # advance world state
         self.world.step()
         # record observation for each agent
@@ -888,20 +890,17 @@ class SatelliteMultiAgentBaseEnv2(gym.Env):
                     action[0][:] = 0.0
                     action[0][d] = 1.0
                 if self.discrete_action_space:
-                    #print('else stateent, second if guy in there self.force_discrete_action') 
-                    #print('the current action thing is; '+str(agent.action.u))
-                    #print('action in x direction '+ str(action[0][1]) + ' subtracting ' + str(action[0][2]))	
+
                     agent.action.u[0] += action[0][1] - action[0][2]
                     agent.action.u[1] += action[0][3] - action[0][4]
-                    #print('bro what ' + str( action[0][3]) + '   -  ' + str(action[0][4]))
+
                 else:
-                   # print('else stateent, final else self.force_discrete_action') 	
+
                     agent.action.u = action[0]
             sensitivity = 5.0
             if agent.accel is not None:
                 sensitivity = agent.accel
             agent.action.u *= sensitivity
-            # NOTE: refer offpolicy/envs/mpe/environment.py -> MultiAgentEnv._set_action() for non-silent agent
             action = action[1:]
         if not agent.silent:
             # communication action

@@ -121,10 +121,6 @@ class SatelliteScenario(BaseScenario):
         
 
         world = SatWorld()
-        #print("Doing the SatWorld thing ")
-        ####################
-        # world = World()
-        # graph related attributes
         world.cache_dists = True # cache distance between all entities
         world.graph_mode = True
         world.graph_feat_type = args.graph_feat_type
@@ -238,10 +234,9 @@ class SatelliteScenario(BaseScenario):
         while True:
             if num_agents_added == self.num_agents:
                 break
-		
-            random_pos = np.random.uniform(-self.world_size/2, 
-                                            self.world_size/2, 
-                                            world.dim_p)
+            random_pos = np.random.uniform(
+                -self.world_size / 2, self.world_size / 2, world.dim_p
+            )
             agent_size = world.agents[num_agents_added].size
             obs_collision = self.is_obstacle_collision(random_pos, agent_size, world)
             agent_collision = self.check_agent_collision(random_pos, agent_size, agents_added)
@@ -251,33 +246,55 @@ class SatelliteScenario(BaseScenario):
                 world.agents[num_agents_added].state.c = np.zeros(world.dim_c)
                 agents_added.append(world.agents[num_agents_added])
                 num_agents_added += 1
-                #print('\nworld agents positon is '+ str(random_pos))
-                #print('world velocity is '+ str( (1/1000)*np.ones(world.dim_p) ))
+
         #####################################################
 
-        relative_poses = [agent.state.p_pos - obs_position for agent in world.agents]
-        thetas = get_thetas(relative_poses)
-        # anchor at the agent with min theta (closest to the horizontal line)
-        theta_min = min(thetas)
-        expected_poses = [obs_position + self.target_radius * np.array(
-                          [np.cos(theta_min + i*self.ideal_theta_separation), 
-                           np.sin(theta_min + i*self.ideal_theta_separation)])
-                          for i in range(self.num_agents)]
-   
-        #####################################################
+        # set scripted agents goals at random positions not colliding with obstacles
+        num_scripted_agents_added = 0
+        while True:
+            if num_scripted_agents_added == self.num_scripted_agents:
+                break
+            random_pos = np.random.uniform(
+                -self.world_size / 2, self.world_size / 2, world.dim_p
+            )
+            agent_size = world.scripted_agents[num_scripted_agents_added].size
+            obs_collision = self.is_obstacle_collision(random_pos, agent_size, world)
+            agent_collision = self.check_agent_collision(
+                random_pos, agent_size, agents_added
+            )
+            if not obs_collision and not agent_collision:
+                world.scripted_agents[
+                    num_scripted_agents_added
+                ].state.p_pos = random_pos
+                world.scripted_agents[num_scripted_agents_added].state.p_vel = np.zeros(
+                    world.dim_p
+                )
+                world.scripted_agents[num_scripted_agents_added].state.c = np.zeros(
+                    world.dim_c
+                )
+                agents_added.append(world.scripted_agents[num_scripted_agents_added])
+                num_scripted_agents_added += 1
 
-        # set landmarks (goals) at random positions not colliding with obstacles 
+        #####################################################
+         # set landmarks (goals) at random positions not colliding with obstacles
         # and also check collisions with already placed goals
         num_goals_added = 0
+        goals_added = []
         while True:
             if num_goals_added == self.num_agents:
                 break
-            
-            world.landmarks[num_goals_added].state.p_pos = expected_poses[num_goals_added]
-            world.landmarks[num_goals_added].state.p_vel = np.zeros(world.dim_p)
-            num_goals_added += 1
-
-        #####################################################
+            random_pos = 0.8 * np.random.uniform(
+                -self.world_size / 2, self.world_size / 2, world.dim_p
+            )
+            goal_size = world.landmarks[num_goals_added].size
+            obs_collision = self.is_obstacle_collision(random_pos, goal_size, world)
+            landmark_collision = self.is_landmark_collision(
+                random_pos, goal_size, world.landmarks[:num_goals_added]
+            )
+            if not landmark_collision and not obs_collision:
+                world.landmarks[num_goals_added].state.p_pos = random_pos
+                world.landmarks[num_goals_added].state.p_vel = np.zeros(world.dim_p)
+                num_goals_added += 1
 
         ############ find minimum times to goals ############
         if self.max_speed is not None:
@@ -290,7 +307,6 @@ class SatelliteScenario(BaseScenario):
         ####################################################
 
     def info_callback(self, agent:Satellite, world:SatWorld) -> Tuple:
-        # TODO modify this 
         rew = 0
         collisions = 0
         occupied_landmarks = 0

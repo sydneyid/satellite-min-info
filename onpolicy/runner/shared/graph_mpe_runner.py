@@ -368,17 +368,15 @@ class GMPERunner(Runner):
             frac_episode_arr.append(np.mean(frac))
             success_rates_arr.append(success)
             num_collisions_arr.append(num_collisions)
-            # print(np.mean(frac), success)
-            # print("Average episode rewards is: " + 
-                    # str(np.mean(np.sum(np.array(episode_rewards), axis=0))))
+
         
-        print(rewards_arr)
-        print(frac_episode_arr)
-        print(success_rates_arr)
-        print(num_collisions_arr)
+        # print(rewards_arr)
+        # print(frac_episode_arr)
+        # print(success_rates_arr)
+        # print(num_collisions_arr)
 
 
-        print('\n----------------------------')
+        print('\n\n\n\n-----------------FINAL SUMMARY ---------------------')
         print('rewards: '+ str(sum(rewards_arr)/len(rewards_arr)/self.num_agents/2))
 
         true_count=0

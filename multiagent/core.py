@@ -76,6 +76,8 @@ class SatWorld(object):
         # list of agents and entities (can change at execution-time!)
         self.agents = []
         self.landmarks = []
+        self.scripted_agents = []
+        self.scripted_agents_goals = []
         self.agents_goals = []
         self.obstacles = []
         # communication channel dimensionality
@@ -86,6 +88,7 @@ class SatWorld(object):
         self.dim_color = 3
         # simulation timestep
         self.dt = 0.1
+        self.perturbed = False #whehther to have the perturbed dynamis or not 
 
         # contact response parameters
         self.contact_force = 1e+2
@@ -106,6 +109,11 @@ class SatWorld(object):
     def policy_agents(self):
         return self.agents
         # return [agent for agent in self.agents if agent.action_callback is None]
+
+    # return all agents controlled by world scripts
+    @property
+    def get_scripted_agents(self):
+        return [agent for agent in self.agents if agent.action_callback is not None]
 
 
     def calculate_distances(self):
@@ -245,7 +253,7 @@ class SatWorld(object):
             
     def step(self):
         # set actions for scripted agents 
-        for agent in self.agents:
+        for agent in self.scripted_agents:
             agent.t += self.dt
             agent.action = agent.action_callback(agent, self)
         # gather forces applied to entities
@@ -340,17 +348,13 @@ class SatWorld(object):
             entity.state.p_pos[1] = x[1]
             entity.state.p_vel[0] = x[2]
             entity.state.p_vel[1] = x[3]
-            if p_force[i] is not None:
-                if ((1000*entity.state.p_vel[0])**2+ (1000*entity.state.p_vel[1])**2)**.5>100:
-                    print('\t\t** WARNING*** velocity is large, the system will be uncontrollable')
-                    
+ 
                     
     def apply_sat_action_force(self, p_force):
         for i,agent in enumerate(self.agents):
             if agent.movable:
-                noise = np.random.randn(*agent.action.u.shape) * agent.u_noise if agent.u_noise else 0.0
                 p_force[i] = (agent.mass * agent.accel if agent.accel is not None 
-                            else agent.mass) * agent.action.u + noise  
+                            else agent.mass) * agent.action.u 
 
         
         return p_force
