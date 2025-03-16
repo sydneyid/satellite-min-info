@@ -1,125 +1,69 @@
 import numpy as np
 import math
 
-# physical/external base state of all entites
-class EntityState(object):
+
+class EntityState(object):  # physical/external base state of all entites
     def __init__(self):
         # physical position
         self.p_pos = None
         # physical velocity
         self.p_vel = None
 
-# state of agents (including communication and internal/mental state)
-class AgentState(EntityState):
-    def __init__(self):
-        super(AgentState, self).__init__()
-        # communication utterance
-        self.c = None
 
-# action of the agent
+class SatState(EntityState):
+    def __init__(self):
+        super(SatState, self).__init__()
+        self.c = None # communication utterance
+
 class Action(object):
     def __init__(self):
-        # physical action
-        self.u = None
-        # communication action
-        self.c = None
-
-# properties of wall entities
-class Wall(object):
-    def __init__(self, orient='H', axis_pos=0.0, endpoints=(-1, 1), width=0.1,
-                hard=True):
-        # orientation: 'H'orizontal or 'V'ertical
-        self.orient = orient
-        # position along axis which wall lays on (y-axis for H, x-axis for V)
-        self.axis_pos = axis_pos
-        # endpoints of wall (x-coords for H, y-coords for V)
-        self.endpoints = np.array(endpoints)
-        # width of wall
-        self.width = width
-        # whether wall is impassable to all agents
-        self.hard = hard
-        # color of wall
-        self.color = np.array([0.0, 0.0, 0.0])
+        self.u = None  # physical action
 
 
-# properties and state of physical world entity
-class Entity(object):
+
+class Entity(object): # properties and state of physical world entity
     def __init__(self):
         # id
         self.id = None
         self.global_id = None
-        # name 
         self.name = ''
-        # properties:
+        
+        
         self.size = 0.050
-        # entity can move / be pushed
-        self.movable = False
-        # entity collides with others
-        self.collide = True
-        # entity can pass through non-hard walls
-        self.ghost = False
-        # material density (affects mass)
-        self.density = 25.0
-        # color
-        self.color = None
-        # max speed and accel
-        self.max_speed = None
+        self.movable = False # entity can move / be pushed
+        self.collide = True  # entity collides with others
+        self.color = None # color
+        self.max_speed = None# max speed and accel
         self.accel = None
-        # state
-        self.state = EntityState()
-        # mass
-        self.initial_mass = 1.0
-        # commu channel
-        self.channel = None
+
+        self.state = EntityState()  # state
+        self.initial_mass = 1.0 #kilograms
+
 
     @property
     def mass(self):
         return self.initial_mass
 
-# properties of landmark entities
 class Landmark(Entity):
     def __init__(self):
         super(Landmark, self).__init__()
 
-# properties of agent entities
-class Agent(Entity):
-    def __init__(self,iden =0):
-        # def __init__(self, orient='H', axis_pos=0.0, endpoints=(-1, 1), width=0.1,
-        #             hard=True):
-        #     # orientation: 'H'orizontal or 'V'ertical
-        #     self.orient = orient
-        #     # position along a
-        super(Agent, self).__init__()
-        
-        ## agent id
-        self.id = iden
-        # agent are adversary
-        self.adversary = False
-        # agent are dummy
-        self.dummy = False
-        # agents are movable by default
-        self.movable = True
-        # cannot send communication signals
-        self.silent = False
-        # cannot observe the world
-        self.blind = False
-        # physical motor noise amount
-        self.u_noise = None
-        # communication noise amount
-        self.c_noise = None
-        # control range
-        self.u_range = 1000000.0
-        # state
-        self.state = AgentState()
-        # action
-        self.action = Action()
-        # script behavior to execute
-        self.action_callback = None
-        # min time required to get to its allocated goal
-        self.goal_min_time = np.inf
-        # time passed for each agent
-        self.t = 0.0
 
+class Satellite(Entity):# properties of satellites
+    def __init__(self):
+        super(Satellite, self).__init__()
+        self.movable = True  # movable by default
+        self.u_range = 1000000.0  # control range
+        self.state = SatState()  # state
+        self.action = Action()  # action
+        self.action_callback = None  # script behavior to execute
+        self.goal_min_time = np.inf # min time required to get to its allocated goal
+        self.t = 0.0 # time passed for each agent
+        self.actions_hist = [] #action history
+        self.positions_hist = [] #position history
+
+
+    
 
 # multi-agent world
 class SatWorld(object):
@@ -132,9 +76,8 @@ class SatWorld(object):
         # list of agents and entities (can change at execution-time!)
         self.agents = []
         self.landmarks = []
-        self.scripted_agents = []
-        self.scripted_agents_goals = []
-        self.obstacles, self.walls = [], []
+        self.agents_goals = []
+        self.obstacles = []
         # communication channel dimensionality
         self.dim_c = 0
         # position dimensionality
@@ -143,19 +86,19 @@ class SatWorld(object):
         self.dim_color = 3
         # simulation timestep
         self.dt = 0.1
-        # physical damping
-        self.damping = 0.25
+
         # contact response parameters
         self.contact_force = 1e+2
         self.contact_margin = 1e-3
+        
         # cache distances between all agents (not calculated by default)
         self.cache_dists = False
         self.cached_dist_vect = None
         self.cached_dist_mag = None
 
-    # return all entities in the worlhttps://owa.exchange.mit.edu/owa/auth/logon.aspx?replaceCurrent=1&reason=3&url=https%3a%2f%2fowa.exchange.mit.edu%2fowa%2fauth%2ferrorfe.aspx%23httpCode%3d500d
+    
     @property
-    def entities(self):
+    def entities(self): #return everything in the envirnment
         return self.agents + self.landmarks + self.obstacles
 
     # return all agents controllable by external policies
@@ -164,10 +107,6 @@ class SatWorld(object):
         return self.agents
         # return [agent for agent in self.agents if agent.action_callback is None]
 
-    # return all agents controlled by world scripts
-    @property
-    def get_scripted_agents(self):
-        return [agent for agent in self.agents if agent.action_callback is not None]
 
     def calculate_distances(self):
         if self.cached_dist_vect is None:
@@ -215,30 +154,8 @@ class SatWorld(object):
             raise ValueError(f"Obstacle with id: {id} doesn't exist in the world")
 
 
-    # gather physical forces acting on entities
-    def apply_environment_force(self, p_force):
-        # simple (but inefficient) collision response
-        for a, entity_a in enumerate(self.entities):
-            for b, entity_b in enumerate(self.entities):
-                if(b <= a): continue
-                [f_a, f_b] = self.get_entity_collision_force(a, b)
-                # [f_a, f_b] = self.get_collision_force(entity_a, entity_b)
-                if(f_a is not None):
-                    if(p_force[a] is None): p_force[a] = 0.0
-                    p_force[a] = f_a + p_force[a] 
-                if(f_b is not None):
-                    if(p_force[b] is None): p_force[b] = 0.0
-                    p_force[b] = f_b + p_force[b]    
-            if entity_a.movable:
-                for wall in self.walls:
-                    wf = self.get_wall_collision_force(entity_a, wall)
-                    if wf is not None:
-                        if p_force[a] is None: p_force[a] = 0.0
-                        p_force[a] = p_force[a] + wf
-        #print('p force as dictated in the apply_environ_force function ' + str(p_force)) 
-        return p_force
 
-    def update_agent_state(self, agent:Agent):
+    def update_agent_state(self, agent:Satellite):
         # set communication state (directly for now)
         if agent.silent:
             agent.state.c = np.zeros(self.dim_c)
@@ -283,64 +200,8 @@ class SatWorld(object):
             force_b = -force if entity_b.movable else None
         return [force_a, force_b]
 
-    # get collision forces for contact between an entity and a wall
-    def get_wall_collision_force(self, entity, wall):
-        if entity.ghost and not wall.hard:
-            return None  # ghost passes through soft walls
-        if wall.orient == 'H':
-            prll_dim = 0
-            perp_dim = 1
-        else:
-            prll_dim = 1
-            perp_dim = 0
-        ent_pos = entity.state.p_pos
-        if (ent_pos[prll_dim] < wall.endpoints[0] - entity.size or
-                ent_pos[prll_dim] > wall.endpoints[1] + entity.size):
-            return None  # entity is beyond endpoints of wall
-        elif (ent_pos[prll_dim] < wall.endpoints[0] or
-                ent_pos[prll_dim] > wall.endpoints[1]):
-            # part of entity is beyond wall
-            if ent_pos[prll_dim] < wall.endpoints[0]:
-                dist_past_end = ent_pos[prll_dim] - wall.endpoints[0]
-            else:
-                dist_past_end = ent_pos[prll_dim] - wall.endpoints[1]
-            theta = np.arcsin(dist_past_end / entity.size)
-            dist_min = np.cos(theta) * entity.size + 0.5 * wall.width
-        else:  # entire entity lies within bounds of wall
-            theta = 0
-            dist_past_end = 0
-            dist_min = entity.size + 0.5 * wall.width
+    
 
-        # only need to calculate distance in relevant dim
-        delta_pos = ent_pos[perp_dim] - wall.axis_pos
-        dist = np.abs(delta_pos)
-        # softmax penetration
-        k = self.contact_margin
-        penetration = np.logaddexp(0, -(dist - dist_min)/k)*k
-        force_mag = self.contact_force * delta_pos / dist * penetration
-        force = np.zeros(2)
-        force[perp_dim] = np.cos(theta) * force_mag
-        force[prll_dim] = np.sin(theta) * np.abs(force_mag)
-        return force
-
-    # get collision forces for any contact between two entities
-    def get_collision_force(self, entity_a, entity_b):
-        if (not entity_a.collide) or (not entity_b.collide):
-            return [None, None] # not a collider
-        if (entity_a is entity_b):
-            return [None, None] # don't collide against itself
-        # compute actual distance between entities
-        delta_pos = entity_a.state.p_pos - entity_b.state.p_pos
-        dist = np.sqrt(np.sum(np.square(delta_pos)))
-        # minimum allowable distance
-        dist_min = entity_a.size + entity_b.size
-        # softmax penetration
-        k = self.contact_margin
-        penetration = np.logaddexp(0, -(dist - dist_min)/k)*k
-        force = self.contact_force * delta_pos / dist * penetration
-        force_a = +force if entity_a.movable else None
-        force_b = -force if entity_b.movable else None
-        return [force_a, force_b]
     
     def assign_agent_colors(self):
         n_dummies = 0
@@ -352,11 +213,30 @@ class SatWorld(object):
         n_good_agents = len(self.agents) - n_adversaries - n_dummies
         # r g b
         dummy_colors = [(0.25, 0.75, 0.25)] * n_dummies
-        adv_colors = [(0.75, 0.25, 0.25)] * n_adversaries
         good_colors = [(0.25, 0.25, 0.75)] * n_good_agents
-        colors = dummy_colors + adv_colors + good_colors
+        colors = dummy_colors  + good_colors
         for color, agent in zip(colors, self.agents):
             agent.color = color
+            
+    # gather physical forces acting on entities
+    def apply_environment_force(self, p_force):
+        # simple (but inefficient) collision response
+        for a, entity_a in enumerate(self.entities):
+            for b, entity_b in enumerate(self.entities):
+                if b <= a:
+                    continue
+                [f_a, f_b] = self.get_entity_collision_force(a, b)
+                # [f_a, f_b] = self.get_collision_force(entity_a, entity_b)
+                if f_a is not None:
+                    if p_force[a] is None:
+                        p_force[a] = 0.0
+                    p_force[a] = f_a + p_force[a]
+                if f_b is not None:
+                    if p_force[b] is None:
+                        p_force[b] = 0.0
+                    p_force[b] = f_b + p_force[b]
+            
+        return p_force
 
     # landmark color
     def assign_landmark_colors(self):
@@ -365,15 +245,17 @@ class SatWorld(object):
             
     def step(self):
         # set actions for scripted agents 
-        for agent in self.scripted_agents:
+        for agent in self.agents:
             agent.t += self.dt
             agent.action = agent.action_callback(agent, self)
         # gather forces applied to entities
         p_force = [None] * len(self.entities)
         # apply agent physical controls
         p_force = self.apply_sat_action_force(p_force)
+        
         # apply environment forces
-        #p_force = self.apply_environment_force(p_force)
+        p_force = self.apply_environment_force(p_force)
+
         # integrate physical state
         self.integrate_sat_state(p_force)
         # update agent state
@@ -382,24 +264,65 @@ class SatWorld(object):
             self.update_agent_state(agent)
         if self.cache_dists:
             self.calculate_distances()
-    def dynamics(self, s,u):
-        mu = 398600
-        a = 6378+300
+            
+        
+            
+            
+    def perturbed_dynamics(self,s,u):
+        mu = (398600)*1000
+        a = (6378+300 )* 1000
         n = (mu/(a**3))**.5
+        re= 6378.1363*1000 #m 
+        J2= 1.08262668e-3
+        ss = ((3*J2*(re**2))/(8*a**2)) * (1+3*math.cos(2*self.i))
+        c =  (1+ss)**.5
+
         A = np.zeros((4,4))
         A[0][2] = 1
         A[1][3] = 1
-        A[2][0] = 3*n**2
-        A[2][3] = 2*n
-        A[3][2] = -2 * n
+        A[2][0] =  -(5*c**2 -2)*n**2  
+        A[2][3] =   -2*n*c  
+        A[3][2] =  2*n*c   
 
         B = np.zeros((4,2))
         B[2][0] = 1
         B[3][1] = 1
+        
         s = np.asarray(s)
         u = np.asarray(u)
+
         dsdt = s.dot(np.array(A).T) + u.dot(np.array(B).T)
         return dsdt 
+        
+        
+    def dynamics(self, s,u):
+        ## linearized J2 equations taken from: https://www.ijser.org/researchpaper/Satellite-Tracking-Control-under-J2-Perturbations.pdf
+        mu = (398600)*1000
+        a = (6378+300 )* 1000
+        n = (mu/(a**3))**.5
+
+        A = np.zeros((4,4))
+        A[0][2] = 1
+        A[1][3] = 1
+        A[2][0] = 3*n**2
+        A[2][3] =  2*n 
+        A[3][2] =  -2*n 
+
+        B = np.zeros((4,2))
+        B[2][0] = 1
+        B[3][1] = 1
+        
+        s = np.asarray(s)
+        u = np.asarray(u)
+
+        dsdt = s.dot(np.array(A).T) + u.dot(np.array(B).T)
+        return dsdt 
+    
+    def call_dynamics(self,x,u):
+        if self.perturbed:
+            return self.perturbed_dynamics(x,u)
+        
+        return self.dynamics(x,u) 
 
     def integrate_sat_state(self, p_force):
         mu= 398600
@@ -410,29 +333,24 @@ class SatWorld(object):
                 u = [0,0]
             else:
                 u = p_force[i]
-            dsdt = self.dynamics(x,u) 
+            dsdt = self.call_dynamics(x,u) 
             x =x + dsdt*self.dt	
-	
+
             entity.state.p_pos[0] = x[0]
             entity.state.p_pos[1] = x[1]
-
             entity.state.p_vel[0] = x[2]
             entity.state.p_vel[1] = x[3]
-            # if p_force[i] is not None:
-                # print('\np force from control is '+str(u) )#           #print('pvelbefore is '+ str(entity.state.p_vel))
-                # print('position after '+ str(entity.state.p_pos) + ' km')
-                # print('pvel after '+ str(1000*entity.state.p_vel) +' m/s')
-                # if ((1000*entity.state.p_vel[0])**2+ (1000*entity.state.p_vel[1])**2)**.5>100:
-                #     print('\t\t** WARNING*** velocity is large, the system will be uncontrollable')
+            if p_force[i] is not None:
+                if ((1000*entity.state.p_vel[0])**2+ (1000*entity.state.p_vel[1])**2)**.5>100:
+                    print('\t\t** WARNING*** velocity is large, the system will be uncontrollable')
+                    
+                    
     def apply_sat_action_force(self, p_force):
-        # set applied forces
-### this should be the guy that generates a legitimate response 
         for i,agent in enumerate(self.agents):
             if agent.movable:
-                #print('agent action in sat action force is '+ str(agent.action.u))
                 noise = np.random.randn(*agent.action.u.shape) * agent.u_noise if agent.u_noise else 0.0
                 p_force[i] = (agent.mass * agent.accel if agent.accel is not None 
                             else agent.mass) * agent.action.u + noise  
-               # print('handdone calculation ' + str(agent.mass*agent.action.u) + 'vs the other guy '+str(p_force[i]))  
-               # print('p force as dictated in the apply_sat_action_force function ' + str(p_force[i]))            
+
+        
         return p_force

@@ -234,7 +234,7 @@ save_location:
   value: false
 scenario_name:
   desc: null
-  value: navigation_graph
+  value: rendezvous_graph
 seed:
   desc: null
   value: 4

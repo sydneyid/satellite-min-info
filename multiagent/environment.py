@@ -3,20 +3,12 @@ from gym import spaces
 from gym.envs.registration import EnvSpec
 import numpy as np
 from typing import Callable, List, Tuple, Dict, Union, Optional
-from multiagent.core import Agent, Landmark,  SatWorld
+from multiagent.core import Satellite, Landmark,  SatWorld
 from multiagent.multi_discrete import MultiDiscrete
 
 # update bounds to center around agent
 cam_range = 2
 
-# environment for all agents in the multiagent world
-# currently code assumes that no agents will be created/destroyed at runtime!
-############## Satellite Environments #######################
-
-
-
-# environment for all agents in the multiagent world
-# currently code assumes that no agents will be created/destroyed at runtime!
 class SatelliteMultiAgentBaseEnv(gym.Env):
     """
         Base environment for all multi-agent environments
@@ -148,13 +140,13 @@ class SatelliteMultiAgentBaseEnv(gym.Env):
         raise NotImplementedError
 
     # get info used for benchmarking
-    def _get_info(self, agent:Agent) -> Dict:
+    def _get_info(self, agent:Satellite) -> Dict:
         if self.info_callback is None:
             return {}
         return self.info_callback(agent, self.world)
 
     # get observation for a particular agent
-    def _get_obs(self, agent:Agent) -> np.ndarray:
+    def _get_obs(self, agent:Satellite) -> np.ndarray:
         if self.observation_callback is None:
             return np.zeros(0)
         return self.observation_callback(agent=agent, world=self.world, 
@@ -168,7 +160,7 @@ class SatelliteMultiAgentBaseEnv(gym.Env):
         
     # get dones for a particular agent
     # unused right now -- agents are allowed to go beyond the viewing screen
-    def _get_done(self, agent:Agent) -> bool:
+    def _get_done(self, agent:Satellite) -> bool:
         if self.done_callback is None:
             if self.current_step >= self.world_length:
                 return True
@@ -177,13 +169,13 @@ class SatelliteMultiAgentBaseEnv(gym.Env):
         return self.done_callback(agent, self.world)
 
     # get reward for a particular agent
-    def _get_reward(self, agent:Agent) -> float:
+    def _get_reward(self, agent:Satellite) -> float:
         if self.reward_callback is None:
             return 0.0
         return self.reward_callback(agent, self.world)
 
     # set env action for a particular agent
-    def _set_action(self, action, agent:Agent, action_space, 
+    def _set_action(self, action, agent:Satellite, action_space, 
                     time:Optional=None) -> None:
         agent.action.u = np.zeros(self.world.dim_p)
         agent.action.c = np.zeros(self.world.dim_c)
@@ -420,7 +412,7 @@ class SatelliteMultiAgentBaseEnv(gym.Env):
         return results
 
     # create receptor field locations in local coordinate frame
-    def _make_receptor_locations(self, agent:Agent) -> List:
+    def _make_receptor_locations(self, agent:Satellite) -> List:
         receptor_type = 'polar'
         range_min = 0.05 * 2.0
         range_max = 1.00
@@ -684,12 +676,12 @@ class SatelliteMultiAgentGraphEnv(SatelliteMultiAgentBaseEnv):
             adj_n.append(adj)
         return obs_n, agent_id_n, node_obs_n, adj_n
     
-    def _get_graph_obs(self, agent:Agent):
+    def _get_graph_obs(self, agent:Satellite):
         if self.graph_observation_callback is None:
             return None, None, None
         return self.graph_observation_callback(agent, self.world)
     
-    def _get_id(self, agent:Agent):
+    def _get_id(self, agent:Satellite):
         if self.id_callback is None:
             return None
         return self.id_callback(agent)
@@ -826,13 +818,13 @@ class SatelliteMultiAgentBaseEnv2(gym.Env):
         raise NotImplementedError
 
     # get info used for benchmarking
-    def _get_info(self, agent:Agent) -> Dict:
+    def _get_info(self, agent:Satellite) -> Dict:
         if self.info_callback is None:
             return {}
         return self.info_callback(agent, self.world)
 
     # get observation for a particular agent
-    def _get_obs(self, agent:Agent) -> np.ndarray:
+    def _get_obs(self, agent:Satellite) -> np.ndarray:
         if self.observation_callback is None:
             return np.zeros(0)
         return self.observation_callback(agent=agent, world=self.world, 
@@ -846,7 +838,7 @@ class SatelliteMultiAgentBaseEnv2(gym.Env):
         
     # get dones for a particular agent
     # unused right now -- agents are allowed to go beyond the viewing screen
-    def _get_done(self, agent:Agent) -> bool:
+    def _get_done(self, agent:Satellite) -> bool:
         if self.done_callback is None:
             if self.current_step >= self.world_length:
                 return True
@@ -855,13 +847,13 @@ class SatelliteMultiAgentBaseEnv2(gym.Env):
         return self.done_callback(agent, self.world)
 
     # get reward for a particular agent
-    def _get_reward(self, agent:Agent) -> float:
+    def _get_reward(self, agent:Satellite) -> float:
         if self.reward_callback is None:
             return 0.0
         return self.reward_callback(agent, self.world)
 
     # set env action for a particular agent
-    def _set_action(self, action, agent:Agent, action_space, 
+    def _set_action(self, action, agent:Satellite, action_space, 
                     time:Optional=None) -> None:
         agent.action.u = np.zeros(self.world.dim_p)
         agent.action.c = np.zeros(self.world.dim_c)
@@ -1098,7 +1090,7 @@ class SatelliteMultiAgentBaseEnv2(gym.Env):
         return results
 
     # create receptor field locations in local coordinate frame
-    def _make_receptor_locations(self, agent:Agent) -> List:
+    def _make_receptor_locations(self, agent:Satellite) -> List:
         receptor_type = 'polar'
         range_min = 0.05 * 2.0
         range_max = 1.00

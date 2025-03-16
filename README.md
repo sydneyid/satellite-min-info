@@ -5,13 +5,14 @@ Using graph neural networks for model the minimum amount of information needed f
 ## Dependencies:
 These are the pacakges and versions that are requried to run tihs repository.
 
-    * `pip install gym==0.10.5` (newer versions also seem to work)
-    * `pip install numpy-stl`
+    * pip install gym==0.10.5 (newer versions also seem to work)
+    * pip install numpy-stl
     * torch==1.8.0              
     * torch-geometric==2.0.3
     * torch-scatter==2.0.8
     * torch-sparse==0.6.12
-    * wandb
+    * wandb==0.15.11
+    * absl-py
    
 
 ## Syntax to Train the File

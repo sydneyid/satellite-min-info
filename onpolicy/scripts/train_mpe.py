@@ -27,7 +27,7 @@ def make_train_env(all_args:argparse.Namespace):
             elif all_args.env_name == "GraphMPE":
                 env = GraphMPEEnv(all_args)
             else:
-                print(f"Can not support the {all_args.env_name} environment")
+                print("Can not support the "+str(all_args.env_name)+" environment")
                 raise NotImplementedError
             env.seed(all_args.seed + rank * 1000)
             return env
@@ -43,30 +43,6 @@ def make_train_env(all_args:argparse.Namespace):
         return SubprocVecEnv([get_env_fn(i) for i in 
                                 range(all_args.n_rollout_threads)])
 
-
-def make_eval_env(all_args:argparse.Namespace):
-    def get_env_fn(rank:int):
-        def init_env():
-            if all_args.env_name == "MPE":
-                env = MPEEnv(all_args)
-            elif all_args.env_name == "GraphMPE":
-                env = GraphMPEEnv(all_args)
-            else:
-                print(f"Can not support the {all_args.env_name} environment")
-                raise NotImplementedError
-            env.seed(all_args.seed * 50000 + rank * 10000)
-            return env
-        return init_env
-    if all_args.n_eval_rollout_threads == 1:
-        if all_args.env_name == "GraphMPE":
-            return GraphDummyVecEnv([get_env_fn(0)])
-        return DummyVecEnv([get_env_fn(0)])
-    else:
-        if all_args.env_name == "GraphMPE":
-            return GraphSubprocVecEnv([get_env_fn(i) for i in 
-                                        range(all_args.n_rollout_threads)])
-        return SubprocVecEnv([get_env_fn(i) for i in 
-                                range(all_args.n_eval_rollout_threads)])
 
 
 def parse_args(args, parser):

@@ -19,15 +19,15 @@ from onpolicy.config import get_config
 from multiagent.MPE_env import MPEEnv, GraphMPEEnv
 from onpolicy.envs.env_wrappers import SubprocVecEnv, DummyVecEnv, GraphSubprocVecEnv, GraphDummyVecEnv
 
-def make_render_env(all_args:argparse.Namespace):
-    def get_env_fn(rank:int):
+def make_render_env(all_args):
+    def get_env_fn(rank):
         def init_env():
             if all_args.env_name == "MPE":
                 env = MPEEnv(all_args)
             elif all_args.env_name == "GraphMPE":
                 env = GraphMPEEnv(all_args)
             else:
-                print(f"Can not support the {all_args.env_name} environment.")
+                print("Can not support the" +str(all_args.env_name)+" environment.")
                 raise NotImplementedError
             env.seed(all_args.seed + rank * 1000)
             return env
@@ -44,7 +44,7 @@ def make_render_env(all_args:argparse.Namespace):
 
 def parse_args(args, parser):
     parser.add_argument('--scenario_name', type=str,
-                        default='simple_spread', help="Which scenario to run on")
+                        default='rendezvous', help="Which scenario to run on")
     parser.add_argument("--num_landmarks", type=int, default=3)
     parser.add_argument('--num_agents', type=int, default=2, 
                         help="number of players")
@@ -77,9 +77,9 @@ def parse_args(args, parser):
 
     return all_args
 
-def modify_args(model_dir:str, 
-                args:argparse.Namespace, 
-                exclude_args:list=['model_dir', 'num_agents', 'num_obstacles', 
+def modify_args(model_dir, 
+                args, 
+                exclude_args=['model_dir', 'num_agents', 'num_obstacles', 
                                 'num_landmarks', 'render_episodes','episode_length', 'world_size',
                                 'seed']):
     """
@@ -92,13 +92,11 @@ def modify_args(model_dir:str,
     print('_'*50)
     for k, v in ydict.items():
         if k in exclude_args:
-            print(f"Using {k} = {vars(args)[k]}")
-            # print(f"Skipping {k} with value {args.k}")
+            print("Using "+str({k}) + ' = ' +str(vars(args)[k]))
             continue
         # all args have 'values' and 'desc' as keys
         if type(v) == dict:
             if 'value' in v.keys():
-                # print(f'Setting attr {k} to {ydict[k]["value"]}')
                 setattr(args, k, ydict[k]['value'])
     print('_'*50)
 
@@ -112,7 +110,6 @@ def modify_args(model_dir:str,
     return args
 
 def main(args):
-    # model_dir = 'trained_models/navigation/Navigation/rmappo/wandb/offline-run-20210720_220614-1eqhk4l1/files'
     parser = get_config()
     all_args = parse_args(args, parser)
     all_args = modify_args(all_args.model_dir, all_args)
@@ -132,10 +129,6 @@ def main(args):
     
     device = torch.device("cpu")
 
-    # run dir
-    # run_dir = Path(os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
-    # if not run_dir.exists():
-    #     os.makedirs(str(run_dir))
 
     # seed
     torch.manual_seed(all_args.seed)
@@ -167,11 +160,9 @@ def main(args):
             raise NotImplementedError
         from onpolicy.runner.separated.mpe_runner import MPERunner as Runner
     
-    # print_args(config['all_args'])
 
     runner = Runner(config)
-    # actor_state_dict = torch.load(str(model_dir) + '/actor.pt')
-    # runner.policy.actor.load_state_dict(actor_state_dict)
+
     runner.render(True)
     
     # post process
