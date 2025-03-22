@@ -50,3 +50,14 @@ Run from the root folder. You need to have a file directory, which contains a co
     pip install --no-index torch-sparse -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html --user
     pip install torch-geometric --user
     ```
+
+## Citation
+If you find our work or code useful in your research, please consider citing the following:
+<pre><code>@article{spacemarl,
+author={{Dolan, Sydney and Nayak, Siddharth and Balakrishnan, Hamsa},
+journal={Learning for Dynamics and Control Conference},
+title={Satellite Navigation and Coordination with Limited Information Sharing},
+publisher ={Proceedings of Machine Learning Research},
+year={2023},
+pages={1058–1071}
+}</code></pre>
